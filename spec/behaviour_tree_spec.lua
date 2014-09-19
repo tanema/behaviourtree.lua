@@ -691,9 +691,18 @@ describe('BehaviourTree', function()
       btree:step()
     end)
 
-    it('tries running task in first position of priority selector')
-    it('does not run the task in sequence before the running task')
-    it('reruns the running task again')
+    it('tries running task in first position of priority selector', function()
+      assert.are.equal(runHighPrio, 2);
+    end);
+
+    it('does not run the task in sequence before the running task', function()
+      assert.are.equal(runFirstSeq, 1);
+    end);
+
+    it('reruns the running task again', function()
+      assert.are.equal(runCount, 2);
+    end);
+
   end)
 end)
 

@@ -32,13 +32,13 @@ end
 
 function BranchNode:success()
   self.nodeRunning = nil
-  self.runningNode.finish(self.object)
+  self.runningNode:finish(self.object)
   self.runningNode = nil
 end
 
 function BranchNode:fail()
   self.nodeRunning = nil
-  self.runningNode.finish(self.object);
+  self.runningNode:finish(self.object);
   self.runningNode = nil
 end
 

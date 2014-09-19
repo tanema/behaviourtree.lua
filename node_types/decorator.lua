@@ -4,14 +4,18 @@ local Registry = require(_PACKAGE..'/registry')
 local Node  = require(_PACKAGE..'/node_types/node')
 local Decorator = class('Decorator', Node)
 
+function Decorator:initialize(config)
+  Node.initialize(self, config)
+  if self.config.node ~= nil then
+    self.node = Registry.getNode(self.config.node)
+  end
+end
+
 function Decorator:setNode(node)
-  self.node = Registry.getNode(self.config.node)
+  self.node = Registry.getNode(node)
 end
 
 function Decorator:start()
-  if self.config.node ~= nil and self.node == nil then
-    self.node = Registry.getNode(self.config.node)
-  end
   self.node:setControl(self);
   self.node:start();
 end
