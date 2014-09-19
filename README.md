@@ -4,7 +4,7 @@ A Lua implementation of Behavior Trees ported from javascript [here](http://gith
 
 ## Installation
 
-Just copy the folder to your lib folder(or wherever) and `BehaviourTree = require('behaviourtree.lua/behaviour_tree')
+Just copy the folder to your lib folder(or wherever) and `BehaviourTree = require('behaviourtree.lua/behaviour_tree')`
 
 ## How to use
 
