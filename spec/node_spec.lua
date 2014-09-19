@@ -28,7 +28,7 @@ describe('Node', function()
         end)
 
         it('and it is available on the instance', function()
-          assert.is_true(node.run())
+          assert.is_true(node:run())
         end)
       end)
     end)

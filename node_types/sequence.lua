@@ -5,7 +5,7 @@ local Sequence = class('Sequence', BranchNode)
 
 function Sequence:_run()
   if self.nodeRunning then
-    self.nodeRunning.run(self.object)
+    self.nodeRunning:run(self.object)
     self.nodeRunning = nil
   else
     BranchNode._run(self)
@@ -22,7 +22,7 @@ function Sequence:success()
   end
 end
 
-function Sequence.fail()
+function Sequence:fail()
   BranchNode.fail(self)
   self.control:fail()
 end

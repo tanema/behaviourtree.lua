@@ -29,15 +29,9 @@ function Node:initialize(config)
   end
 end
 
-function Node:start()
-end
-
-function Node:finish()
-end
-
-function Node:run()
-  print('warning: run of ' .. self.title .. ' not implemented!')
-end
+function Node:start() end
+function Node:finish() end
+function Node:run() end
 
 function Node:setControl(control)
   self.control = control
