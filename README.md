@@ -198,7 +198,7 @@ local decoratedSequence = BehaviourTree.InvertDecorator:new({
 })
 ```
 
-*Those three decorators are useful, but the most useful decorators are those you build for your project, that do stuff with your objects. Just [check out the code](https://github.com/Calamari/tanema/behaviourtree.lua/master/node_types/invert_decorator.lua), to see how simple it is, to create your decorator.*
+*Those three decorators are useful, but the most useful decorators are those you build for your project, that do stuff with your objects. Just [check out the code](https://github.com/tanema/behaviourtree.lua/blob/master/node_types/invert_decorator.lua), to see how simple it is, to create your decorator.*
 
 ## Contributing
 
