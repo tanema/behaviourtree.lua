@@ -40,7 +40,13 @@ local mytask = BehaviourTree.Task:new({
 
 --you can also declare a task like this
 local myothertask = BehaviourTree.Task:new()
-function myothertask:run()
+function myothertask:start(obj)
+  obj.isStarted = true
+end
+function myothertask:finish(obj)
+  obj.isStarted = false
+end
+function myothertask:run(obj)
   self:success()
 end
 --however the other syntax lends building an inline table
