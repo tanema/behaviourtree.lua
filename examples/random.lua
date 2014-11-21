@@ -43,5 +43,5 @@ local Frank = BT:new({
 })
 
 for _ = 1, 20 do
-  Frank:step()
+  Frank:run()
 end

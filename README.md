@@ -118,12 +118,12 @@ local mytree = BehaviourTree:new({
 
 ### Run through the behavior tree
 
-Before you let the tree do it's work you can add an object to the tree. This object will be passed into every `start()`, `finish()` and `run()` method as first argument. You can use it, to let the Behavior tree know, on which object (e.g. artificial player) it is running. After this just call `step()` whenever you have time for some AI calculations in your game loop.
+Before you let the tree do it's work you can add an object to the tree. This object will be passed into every `start()`, `finish()` and `run()` method as first argument. You can use it, to let the Behavior tree know, on which object (e.g. artificial player) it is running. After this just call `run()` whenever you have time for some AI calculations in your game loop.
 
 ``` lua
 mytree:setObject(someBot);
 // do this in a loop:
-mytree:step();
+mytree:run();
 ```
 
 ### Using a lookup table for your tasks
@@ -182,7 +182,7 @@ local dog = Dog:new(--[[..]]) -- the nasty details of a dog are omitted
 
 btree:setObject(dog)
 for _ = 1, 20 do
-  btree:step()
+  btree:run()
 end
 ```
 

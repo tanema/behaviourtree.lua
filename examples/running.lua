@@ -29,6 +29,6 @@ local Frank = BT:new({
 
 for i = 1, 20 do
   count = i
-  Frank:step()
+  Frank:run()
 end
 

@@ -30,10 +30,6 @@ function BehaviourTree:run()
   end
 end
 
-function BehaviourTree:step()
-  self:run()
-end
-
 function BehaviourTree:running()
   Node.running(self)
   self.started = false
