@@ -1,12 +1,10 @@
-behaviourtree.lua
-=================
-# BehaviorTree.js
+# BehaviourTree.lua
 
 A Lua implementation of Behavior Trees ported from javascript [here](http://github.com/Calamari/BehaviorTree.js). They are useful for implementing AIs. If you need more information about Behavior Trees, look on [GameDevAI](http://aigamedev.com), there is a nice [video about Behavior Trees from Alex Champandard](http://aigamedev.com/open/article/behavior-trees-part1/). There is also a nice read of [Björn Knafla](http://www.altdevblogaday.com/author/bjoern-knafla/) explaining how [explaining how Behavior Trees work](http://www.altdevblogaday.com/2011/02/24/introduction-to-behavior-trees/).
 
 ## Installation
 
-Just copy the folder to your lib folder(or wherever) and `BehaviourTree = require('behaviourtree.lua/behaviour_tree')
+Just copy the folder to your lib folder(or wherever) and `BehaviourTree = require('behaviourtree.lua/behaviour_tree')`
 
 ## How to use
 
@@ -15,7 +13,7 @@ Just copy the folder to your lib folder(or wherever) and `BehaviourTree = requir
 A task is a simple `Node` (to be precise a leafnode), which takes care of all the dirty work in it's `run` method, which calls `success()`, `fail()` or `running()` in the end.
 
 ``` lua
-local mytask = BehaviorTree.Task:new({
+local mytask = BehaviourTree.Task:new({
   -- (optional) this function is called directly before the run method
   -- is called. It allows you to setup things before starting to run
   -- Beware: if task is resumed after calling this.running(), start is not called.
@@ -49,14 +47,14 @@ The methods:
 
 The interesting part:
 
-* the argument for all this methods is the object you pass in into the instance of `BehaviorTree` with the `setObject` method. This could be the object you want the behavior tree to control.
+* the argument for all this methods is the object you pass in into the instance of `BehaviourTree` with the `setObject` method. This could be the object you want the behavior tree to control.
 
 ### Creating a sequence
 
 A `Sequence` will call every one of it's subnodes one after each other until one node calls `fail()` or all nodes were called. If one node calls `fail()` the `Sequence` will call `fail()` too, else it will call `success()`.
 
 ``` lua
-local mysequence = BehaviorTree.Sequence:new({
+local mysequence = BehaviourTree.Sequence:new({
   title = 'my sequence',
   nodes = {
     -- here comes in a list of nodes (Tasks, Sequences or Priorities)
@@ -70,7 +68,7 @@ local mysequence = BehaviorTree.Sequence:new({
 A `Priority` calls every node in it's list until one node calls `success()`, then itself calls success internally. If none subnode calls `success()` the priority selector itself calls `fail()`.
 
 ``` lua
-local myselector = BehaviorTree.Priority:new({
+local myselector = BehaviourTree.Priority:new({
   title = 'my selector',
   nodes = {
     -- here comes in a list of nodes (Tasks, Sequences or Priorities)
@@ -84,7 +82,7 @@ local myselector = BehaviorTree.Priority:new({
 A `Random` selector calls randomly one node in it's list, if it returns running, it will be called again on next run.
 
 ``` lua
-local myselector = BehaviorTree.Random:new({
+local myselector = BehaviourTree.Random:new({
   title = 'my random selector',
   nodes = {
     -- here comes in a list of nodes (Tasks, Sequences or Priorities)
@@ -95,10 +93,10 @@ local myselector = BehaviorTree.Random:new({
 
 ### Creating a behavior tree
 
-Creating a behavior tree is fairly simple. Just instantiate the `BehaviorTree` class and put in a `Node` (or more probably a `BranchingNode` or `Priority`, like a `Sequence` or `Priority`) in the `tree` parameter.
+Creating a behavior tree is fairly simple. Just instantiate the `BehaviourTree` class and put in a `Node` (or more probably a `BranchingNode` or `Priority`, like a `Sequence` or `Priority`) in the `tree` parameter.
 
 ``` lua
-local mytree = BehaviorTree:new({
+local mytree = BehaviourTree:new({
   title = 'tree1',  -- this is optional but useful if error happens
   tree = 'a selector' -- the value of tree can be either string (which is the registered name of a node), or any node
 })
@@ -120,9 +118,9 @@ If you need the same nodes multiple times in a tree (or even in different trees)
 
 ``` lua
 -- register a task:
-BehaviorTree.register('testtask', mytask)
+BehaviourTree.register('testtask', mytask)
 -- or register a sequence or priority:
-BehaviorTree.register('test sequence', mysequence)
+BehaviourTree.register('test sequence', mysequence)
 ```
 
 Now you can simply use it by name
@@ -132,7 +130,7 @@ Now you can simply use it by name
 And now an example of how all could work together.
 
 ``` lua
-BehaviorTree.register('bark', BehaviorTree.Task:new({
+BehaviourTree.register('bark', BehaviourTree.Task:new({
   title = 'bark',
   run = function(self, dog)
     dog:bark()
@@ -140,12 +138,12 @@ BehaviorTree.register('bark', BehaviorTree.Task:new({
   end
 }))
 
-local btree = BehaviorTree:new({
+local btree = BehaviourTree:new({
   title = 'dog behaviors',
-  tree = BehaviorTree.Sequence:new({
+  tree = BehaviourTree.Sequence:new({
     nodes: {
       'bark',
-      BehaviorTree.Task:new({
+      BehaviourTree.Task:new({
         title = 'walk',
         run = function(self, dog)
           dog:randomlyWalk()
@@ -153,7 +151,7 @@ local btree = BehaviorTree:new({
         end
       }),
       'bark',
-      BehaviorTree.Task:new({
+      BehaviourTree.Task:new({
         title = 'mark tree',
         run = function(self, dog) 
           if dog:standBesideATree() then
@@ -187,20 +185,20 @@ Instead of a simple `Node` or any `BranchingNode` (like any selector), you can a
 But it is useful as base class for new implementations, like the implemented `InvertDecorator` which flips success and fail states, the `AlwaysSucceedDecorator` which inverts the fail state, and the `AlwaysFailDecorator` which inverts the success state.
 
 ``` lua
-local mysequence = BehaviorTree.Sequence:new({
+local mysequence = BehaviourTree.Sequence:new({
   title = 'my sequence',
   nodes = {
     -- here comes in a list of nodes (Tasks, Sequences or Priorities)
     -- as objects or as registered strings
   }
 })
-local decoratedSequence = BehaviorTree.InvertDecorator:new({
+local decoratedSequence = BehaviourTree.InvertDecorator:new({
   title: 'decorated sequence',
   node: mysequence
 })
 ```
 
-*Those three decorators are useful, but the most useful decorators are those you build for your project, that do stuff with your objects. Just [check out the code](https://github.com/Calamari/tanema/behaviourtree.lua/master/node_types/invert_decorator.lua), to see how simple it is, to create your decorator.*
+*Those three decorators are useful, but the most useful decorators are those you build for your project, that do stuff with your objects. Just [check out the code](https://github.com/tanema/behaviourtree.lua/blob/master/node_types/invert_decorator.lua), to see how simple it is, to create your decorator.*
 
 ## Contributing
 
