@@ -6,26 +6,24 @@ local Decorator = class('Decorator', Node)
 
 function Decorator:initialize(config)
   Node.initialize(self, config)
-  if self.config.node ~= nil then
-    self.node = Registry.getNode(self.config.node)
-  end
+  self.node = Registry.getNode(self.node)
 end
 
 function Decorator:setNode(node)
   self.node = Registry.getNode(node)
 end
 
-function Decorator:start()
-  self.node:setControl(self);
-  self.node:start();
+function Decorator:start(object)
+  self.node:setControl(self)
+  self.node:start(object)
 end
 
-function Decorator:finish()
-  self.node:finish()
+function Decorator:finish(object)
+  self.node:finish(object)
 end
 
-function Decorator:run(obj)
-  self.node:run(obj)
+function Decorator:run(object)
+  self.node:run(object)
 end
 
 return Decorator

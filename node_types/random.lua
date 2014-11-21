@@ -10,11 +10,11 @@ function Random:start()
   end
 end
 
-function Random:_run()
+function Random:_run(object)
   if not self.runningNode then
-    BranchNode._run(self)
+    BranchNode._run(self, object)
   else 
-    self.runningNode:run(self.object)
+    self.runningNode:run(object)
   end
 end
 

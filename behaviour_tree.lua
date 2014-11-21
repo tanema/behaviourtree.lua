@@ -1,9 +1,10 @@
-local _PACKAGE = (...):match("^(.+)[%./][^%./]+") or ""
-local class = require(_PACKAGE..'/middleclass')
-local Registry = require(_PACKAGE..'/registry')
-local BehaviourTree = class('BehaviourTree')
+local _PACKAGE      = (...):match("^(.+)[%./][^%./]+") or ""
+local class         = require(_PACKAGE..'/middleclass')
+local Registry      = require(_PACKAGE..'/registry')
+local Node          = require(_PACKAGE..'/node_types/node')
+local BehaviourTree = class('BehaviourTree', Node)
  
-BehaviourTree.Node                    = require(_PACKAGE..'/node_types/node')
+BehaviourTree.Node                    = Node
 BehaviourTree.Task                    = require(_PACKAGE..'/node_types/node')
 BehaviourTree.BranchNode              = require(_PACKAGE..'/node_types/branch_node', BehaviourTree)
 BehaviourTree.Priority                = require(_PACKAGE..'/node_types/priority')
@@ -17,40 +18,36 @@ BehaviourTree.AlwaysSucceedDecorator  = require(_PACKAGE..'/node_types/always_su
 BehaviourTree.register = Registry.register
 BehaviourTree.getNode = Registry.getNode
 
-function BehaviourTree:initialize(config)
-  self.config    = config and config or {}
-  self.rootNode = self.config.tree;
-  self.object   = self.config.object;
-end
-
-function BehaviourTree:setObject(obj)
-  self.object = obj
+function BehaviourTree:run()
+  if self.started then
+    self:running()
+  else
+    self.started = true
+    self.rootNode = Registry.getNode(self.tree)
+    self.rootNode:setControl(self)
+    self.rootNode:start(self.object)
+    self.rootNode:run(self.object)
+  end
 end
 
 function BehaviourTree:step()
-  if self.started then
-    return --the previous step is still working
-  end
-
-  self.started = true
-  local node = Registry.getNode(self.rootNode)
-  self.actualNode = node
-  node:setControl(self)
-  node:start(self.object)
-  node:run(self.object)
+  self:run()
 end
 
 function BehaviourTree:running()
+  Node.running(self)
   self.started = false
 end
 
 function BehaviourTree:success()
-  self.actualNode:finish(self.object);
+  Node.success(self)
+  self.rootNode:finish(self.object);
   self.started = false
 end
 
 function BehaviourTree:fail()
-  self.actualNode:finish(self.object);
+  Node.fail(self)
+  self.rootNode:finish(self.object);
   self.started = false
 end
 

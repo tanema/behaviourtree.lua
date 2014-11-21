@@ -1,37 +1,38 @@
 local BT = require('behaviour_tree')
 
 local Frank = BT:new({
+  object = {name = 'test'},
   tree = BT.Sequence:new({
     nodes = {
       BT.Task:new({
-        run = function(self)
-          print("looking")
+        run = function(self, object)
+          print(object.name .. " looking")
           self:success()
         end
       }),
       BT.Random:new({
         nodes = {
           BT.Task:new({
-            run = function(self)
-              print("walk left")
+            run = function(self, object)
+              print(object.name .. " walk left")
               self:success()
             end
           }),
           BT.Task:new({
-            run = function(self)
-              print("walk up")
+            run = function(self, object)
+              print(object.name .. " walk up")
               self:success()
             end
           }),
           BT.Task:new({
-            run = function(self)
-              print("walk right")
+            run = function(self, object)
+              print(object.name .. " walk right")
               self:success()
             end
           }),
           BT.Task:new({
-            run = function(self)
-              print("walk down")
+            run = function(self, object)
+              print(object.name .. " walk down")
               self:success()
             end
           }),

@@ -9,20 +9,20 @@ function BranchNode:start()
 end
 
 function BranchNode:run(object)
-  self.object = object
-  self:start()
+  self:setObject(object)
+  self:start(object)
   if self.actualTask <= #self.nodes then
-    self:_run()
+    self:_run(object)
   end
-  self:finish()
+  self:finish(object)
 end
 
-function BranchNode:_run()
+function BranchNode:_run(object)
   local node = Registry.getNode(self.nodes[self.actualTask])
   self.runningNode = node
   node:setControl(self)
-  node:start(self.object)
-  node:run(self.object)
+  node:start(object)
+  node:run(object)
 end
 
 function BranchNode:running(node)
