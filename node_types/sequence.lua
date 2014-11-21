@@ -6,7 +6,6 @@ local Sequence = class('Sequence', BranchNode)
 function Sequence:_run()
   if self.nodeRunning then
     self.nodeRunning:run(self.object)
-    self.nodeRunning = nil
   else
     BranchNode._run(self)
   end
