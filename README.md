@@ -135,6 +135,12 @@ If you need the same nodes multiple times in a tree (or even in different trees)
 BehaviourTree.register('testtask', mytask)
 -- or register a sequence or priority:
 BehaviourTree.register('test sequence', mysequence)
+-- or register anything automatically by giving it a name
+BehaviourTree.Task:new({
+  name = 'registered task'
+  -- run impl.
+})
+
 ```
 
 Now you can simply use it by name
