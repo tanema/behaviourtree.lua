@@ -1,11 +1,16 @@
-local _PACKAGE = (...):match("^(.+)[%./][^%./]+"):gsub("[%./]?node_types", "")
-local class = require(_PACKAGE..'/middleclass')
-local Node = class('Node')
+local _PACKAGE  = (...):match("^(.+)[%./][^%./]+"):gsub("[%./]?node_types", "")
+local class     = require(_PACKAGE..'/middleclass')
+local Registry  = require(_PACKAGE..'/registry')
+local Node      = class('Node')
 
 function Node:initialize(config)
   config = config or {}
   for k, v in pairs(config) do
     self[k] = v
+  end
+
+  if self.name ~= nil then
+    Registry.register(self.name, self)
   end
 end
 
