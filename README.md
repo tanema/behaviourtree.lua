@@ -37,6 +37,13 @@ local mytask = BehaviourTree.Task:new({
     self:success()
   end
 });
+
+--you can also declare a task like this
+local myothertask = BehaviourTree.Task:new()
+function myothertask:run()
+  self:success()
+end
+--however the other syntax lends building an inline table
 ```
 
 The methods:
