@@ -1,4 +1,4 @@
-local BehaviourTree = require 'behaviour_tree'
+local BehaviourTree = require 'lib/behaviour_tree'
 
 describe('InvertDecorator', function()
   local invertDecorator, node, calledStart, calledEnd, calledRun;

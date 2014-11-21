@@ -1,5 +1,5 @@
 require 'spec/custom_asserts'
-local BehaviourTree = require 'behaviour_tree'
+local BehaviourTree = require 'lib/behaviour_tree'
 
 describe('BehaviourTree', function()
   describe('can be constructed with', function()

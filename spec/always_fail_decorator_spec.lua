@@ -1,5 +1,5 @@
 require 'spec/custom_asserts'
-local BehaviourTree = require 'behaviour_tree'
+local BehaviourTree = require 'lib/behaviour_tree'
 local AlwaysFailDecorator = BehaviourTree.AlwaysFailDecorator
 
 describe('AlwaysFailDecorator', function()

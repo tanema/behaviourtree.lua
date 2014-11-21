@@ -1,4 +1,4 @@
-local BT = require('behaviour_tree')
+local BT = require('lib/behaviour_tree')
 local count
 
 local looking = BT.Task:new()
