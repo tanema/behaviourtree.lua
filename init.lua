@@ -1,3 +1,4 @@
 -- This is for love so I can just require the folder
-return require('behaviour_tree')
+local _PACKAGE = string.gsub(...,"%.","/") or ""
+return require(_PACKAGE..'/behaviour_tree')
 
