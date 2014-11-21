@@ -4,20 +4,20 @@ local BehaviourTree = require 'behaviour_tree'
 describe('Random', function()
   local random
   describe('can be constructed with', function()
-    describe('an object containing it\'s title', function()
+    describe('an object containing it\'s nodes', function()
       before_each(function()
-        random = BehaviourTree.Random:new({ title = 'runAny' })
+        random = BehaviourTree.Random:new({ nodes = 'runAny' })
       end)
 
-      it('and the title is saved on the instance', function()
-        assert.are.equal(random.title, 'runAny')
+      it('and the nodes is saved on the instance', function()
+        assert.are.equal(random.nodes, 'runAny')
       end)
     end)
   end)
 
   describe('instance', function()
     before_each(function()
-      random = BehaviourTree.Random:new({ title = 'random' })
+      random = BehaviourTree.Random:new({ })
     end)
 
     it('has the same methods like a BranchNode instance', function()
@@ -72,7 +72,6 @@ describe('Random', function()
         finish = function() endCalled2 = true end
       })
       selector = BehaviourTree.Random:new({
-        title = 'a random',
         nodes = {
           node1,
           node2
@@ -176,7 +175,6 @@ describe('Random', function()
       parentSuccessCalled = false
       parentFailCalled = false
       selector = BehaviourTree.Random:new({
-        title = 'a random',
         nodes = {
           BehaviourTree.Node:new({
             run = function(self)
@@ -193,7 +191,6 @@ describe('Random', function()
       })
 
       parentSelector = BehaviourTree.Random:new({
-        title = 'parent',
         nodes = { selector },
         running = function()
           parentRunningCalled = true

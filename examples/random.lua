@@ -1,43 +1,35 @@
-local BehaviorTree = require('behaviour_tree')
+local BT = require('behaviour_tree')
 
-local Frank = BehaviorTree:new({
-  title = "Frank",
-  tree = BehaviorTree.Sequence:new({
-    title = "frank sequence",
+local Frank = BT:new({
+  tree = BT.Sequence:new({
     nodes = {
-      BehaviorTree.Task:new({
-        title = 'lookaround',
+      BT.Task:new({
         run = function(self)
           print("looking")
           self:success()
         end
       }),
-      BehaviorTree.Random:new({
-        title = 'walk',
+      BT.Random:new({
         nodes = {
-          BehaviorTree.Task:new({
-            title = 'left',
+          BT.Task:new({
             run = function(self)
               print("walk left")
               self:success()
             end
           }),
-          BehaviorTree.Task:new({
-            title = 'up',
+          BT.Task:new({
             run = function(self)
               print("walk up")
               self:success()
             end
           }),
-          BehaviorTree.Task:new({
-            title = 'right',
+          BT.Task:new({
             run = function(self)
               print("walk right")
               self:success()
             end
           }),
-          BehaviorTree.Task:new({
-            title = 'down',
+          BT.Task:new({
             run = function(self)
               print("walk down")
               self:success()

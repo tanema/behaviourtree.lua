@@ -7,13 +7,11 @@ describe('InvertDecorator', function()
     calledEnd = false
     calledRun = false
     node = BehaviourTree.Node:new({
-      title = 'aNode',
       start = function() calledStart = true; end,
       finish = function() calledEnd = true; end,
       run = function(self, cb) calledRun = true; cb(self); end
     });
     invertDecorator = BehaviourTree.InvertDecorator:new({
-      title = 'defaultDecorator',
       node = node
     });
   end);

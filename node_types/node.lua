@@ -4,7 +4,6 @@ local Node = class('Node')
 
 function Node:initialize(config)
   self.config    = config or {}
-  self.title     = self.config.title
 
   if self.config.nodes ~= nil then
     self.nodes = self.config.nodes;

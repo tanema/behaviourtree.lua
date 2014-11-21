@@ -9,7 +9,6 @@ describe('Decorator', function()
     calledEnd = false
     calledRun = false
     node = BehaviourTree.Node:new({
-      title = 'aNode',
       start = function() calledStart = true end,
       finish = function() calledEnd = true end,
       run = function(self, blackboard, cb)
@@ -23,16 +22,11 @@ describe('Decorator', function()
   end)
 
   describe('can be constructed with', function()
-    describe('an object containing it\'s title and the node', function()
+    describe('an object containing it\'s node', function()
       before_each(function()
         decorator = BehaviourTree.Decorator:new({
-          title = 'defaultDecorator',
           node = node
         })
-      end)
-
-      it('and the title is saved on the instance', function()
-        assert.are.equal(decorator.title, 'defaultDecorator')
       end)
 
       it('and the node is saved on the instance', function()
@@ -40,16 +34,10 @@ describe('Decorator', function()
       end)
     end)
 
-    describe('an object containing it\'s title, but no node', function()
+    describe('an object containing no nodes', function()
       before_each(function()
-        BehaviourTree.register(node)
-        decorator = BehaviourTree.Decorator:new({
-          title = 'defaultDecorator'
-        })
-      end)
-
-      it('and the title is saved on the instance', function()
-        assert.are.equal(decorator.title, 'defaultDecorator')
+        BehaviourTree.register('aNode',node)
+        decorator = BehaviourTree.Decorator:new({ })
       end)
 
       it('and the node is null', function()
@@ -67,20 +55,14 @@ describe('Decorator', function()
       end)
     end)
 
-    describe('an object containing it\'s title and the title of the node', function()
+    describe('an object containing the title of the node', function()
       before_each(function()
         decorator = BehaviourTree.Decorator:new({
-          title = 'defaultDecorator',
           node = 'aNode'
         })
       end)
 
-      it('and the title is saved on the instance', function()
-        assert.are.equal(decorator.title, 'defaultDecorator')
-      end)
-
       it('and the node is saved on the instance', function()
-        assert.are.equal(decorator.node.title, node.title)
         assert.are.equal(decorator.node:isInstanceOf(BehaviourTree.Node), true)
       end)
     end)
@@ -92,7 +74,6 @@ describe('Decorator', function()
       hasFailed = false
       didSucceed = false
       decorator = BehaviourTree.Decorator:new({
-        title = 'defaultDecorator',
         node = node
       })
     end)

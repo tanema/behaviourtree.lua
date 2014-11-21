@@ -10,7 +10,6 @@ describe('AlwaysSucceedDecorator', function()
     calledRun = false
 
     node = BehaviourTree.Node:new({
-      title = 'aNode',
       start = function() calledStart = true end,
       finish = function() calledEnd = true end,
       run = function(self, cb) 
@@ -20,7 +19,6 @@ describe('AlwaysSucceedDecorator', function()
     })
 
     alwaysDecorator = AlwaysSucceedDecorator:new({
-      title = 'defaultDecorator',
       node = node
     })
 

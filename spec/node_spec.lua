@@ -8,13 +8,13 @@ describe('Node', function()
 
       local node
 
-      describe("a title", function() 
+      describe("nodes", function() 
         before_each(function() 
-          node = Node:new({title = 'firstNode'})
+          node = Node:new({nodes = 'firstNode'})
         end)
 
-        it('and the title is saved on the instance', function() 
-          assert.are.equal(node.title, 'firstNode')
+        it('and the nodes field is saved on the instance', function() 
+          assert.are.equal(node.nodes, 'firstNode')
         end)
       end)
 
@@ -38,7 +38,7 @@ describe('Node', function()
     local  node
 
     before_each(function()
-      node = Node:new({ title = 'node' })
+      node = Node:new({ })
     end)
 
     it('has a start method', function()

@@ -98,12 +98,9 @@ describe('BehaviourTree', function()
       stillRunning2 = false
 
       btree = BehaviourTree:new({
-        title = 'tree',
         tree = BehaviourTree.Sequence:new({
-          title = 'my sequence',
           nodes = {
             BehaviourTree.Task:new({
-              title = 'node1',
               run = function(self)
                 runCount1 = runCount1 + 1
                 if beSuccess1 then 
@@ -114,7 +111,6 @@ describe('BehaviourTree', function()
               end
             }),
             BehaviourTree.Task:new({
-              title = 'node2',
               run = function(self)
                 runCount2 = runCount2 + 1
                 if stillRunning2 then
@@ -193,7 +189,6 @@ describe('BehaviourTree', function()
       btree = BehaviourTree:new({
         object = obj,
         tree = BehaviourTree.Sequence:new({
-          title = 'my sequence',
           nodes = {
             BehaviourTree.Task:new({
               run = function(self,object)
@@ -227,7 +222,6 @@ describe('BehaviourTree', function()
         end
       }))
       btree = BehaviourTree:new({
-        title = 'tree1',
         tree = 'testtask'
       })
     end)
@@ -244,7 +238,6 @@ describe('BehaviourTree', function()
       before_each(function()
         testObj2 = { sim = 'babwe' }
         btree2 = BehaviourTree:new({
-          title = 'tree2',
           tree = 'testtask'
         })
       end)
@@ -278,15 +271,13 @@ describe('BehaviourTree', function()
       hasRunObj = null
       testObj1 = { sim = 'ba' }
 
-      BehaviourTree.register(BehaviourTree.Task:new({
-        title = 'testtask',
+      BehaviourTree.register('testtask', BehaviourTree.Task:new({
         run = function(self,obj)
           hasRunObj = obj
           self:success()
         end
       }))
       btree = BehaviourTree:new({
-        title = 'tree1',
         tree = 'testtask'
       })
       btree:setObject(testObj1)
@@ -308,7 +299,6 @@ describe('BehaviourTree', function()
       testObj1 = { sim = 'ba' }
 
       BehaviourTree.register('testtask', BehaviourTree.Task:new({
-        title = 1,
         run = function(self,obj)
           hasRunObj1[#hasRunObj1+1] = obj
           if beSuccess then
@@ -319,15 +309,12 @@ describe('BehaviourTree', function()
         end
       }))
       BehaviourTree.register('testtask2', BehaviourTree.Task:new({
-        title = 2,
         run = function(self,obj) 
           hasRunObj2[#hasRunObj2+1] = obj
         end
       }))
       btree = BehaviourTree:new({
-        title = 'tree1',
         tree = BehaviourTree.Sequence:new({
-          title = 'my sequence',
           nodes = {
             'testtask',
             'testtask2'
@@ -348,9 +335,7 @@ describe('BehaviourTree', function()
       before_each(function()
         testObj2 = { sim = 'babwe' }
         btree2 = BehaviourTree:new({
-          title = 'tree2',
           tree = BehaviourTree.Sequence:new({
-            title = 'my sequence',
             nodes = {
               'testtask',
               'testtask2'
@@ -388,14 +373,12 @@ describe('BehaviourTree', function()
       local testObj3 = { sim = 'foo' }
       before_each(function()
         BehaviourTree.register('le sequence', BehaviourTree.Sequence:new({
-          title = 'my sequence',
           nodes = {
             'testtask',
             'testtask2'
           }
         }))
         btree3 = BehaviourTree:new({
-          title = 'tree3',
           tree = 'le sequence'
         })
       end)
@@ -429,14 +412,12 @@ describe('BehaviourTree', function()
       before_each(function()
         testObj3 = { sim = 'bar' }
         BehaviourTree.register('le selector', BehaviourTree.Priority:new({
-          title = 'my selector',
           nodes = {
             'testtask',
             'testtask2'
           }
         }))
         btree3 = BehaviourTree:new({
-          title = 'tree3',
           tree = 'le selector'
         })
       end)
@@ -480,7 +461,6 @@ describe('BehaviourTree', function()
         end
       }))
       btree = BehaviourTree:new({
-        title = 'tree1',
         tree = 'testtask'
       })
     end)
@@ -514,7 +494,6 @@ describe('BehaviourTree', function()
         }
       }))
       btree = BehaviourTree:new({
-        title = 'tree1',
         tree = 'testseq'
       })
     end)
@@ -544,11 +523,9 @@ describe('BehaviourTree', function()
         }
       }))
       btree = BehaviourTree:new({
-        title = 'tree1',
         tree = 'testseq'
       })
       btree2 = BehaviourTree:new({
-        title = 'tree2',
         tree = 'testseq'
       })
     end)
@@ -588,7 +565,6 @@ describe('BehaviourTree', function()
         end
       })
       btree = BehaviourTree:new({
-        title = 'test me',
         tree = node
       })
       btree:setObject(testObj)
@@ -617,7 +593,6 @@ describe('BehaviourTree', function()
         end
       })
       btree = BehaviourTree:new({
-        title = 'test me twice',
         tree = node
       })
       btree:setObject(testObj)
@@ -660,22 +635,17 @@ describe('BehaviourTree', function()
         end
       })
       btree = BehaviourTree:new({
-        title = 'prio or not to prio',
         tree = BehaviourTree.Priority:new({
-          title = 'selector',
           nodes = {
             BehaviourTree.Node:new({
-              title = 'high prio',
               run = function(self)
                 runHighPrio = runHighPrio + 1
                 self:fail()
               end
             }),
             BehaviourTree.Sequence:new({
-              title = 'sequence',
               nodes = {
                 BehaviourTree.Node:new({
-                  title = 'first in sequence',
                   run = function(self)
                     runFirstSeq = runFirstSeq + 1
                     self:success()

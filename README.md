@@ -55,7 +55,6 @@ A `Sequence` will call every one of it's subnodes one after each other until one
 
 ``` lua
 local mysequence = BehaviourTree.Sequence:new({
-  title = 'my sequence',
   nodes = {
     -- here comes in a list of nodes (Tasks, Sequences or Priorities)
     -- as objects or as registered strings
@@ -69,7 +68,6 @@ A `Priority` calls every node in it's list until one node calls `success()`, the
 
 ``` lua
 local myselector = BehaviourTree.Priority:new({
-  title = 'my selector',
   nodes = {
     -- here comes in a list of nodes (Tasks, Sequences or Priorities)
     -- as objects or as registered strings
@@ -83,7 +81,6 @@ A `Random` selector calls randomly one node in it's list, if it returns running,
 
 ``` lua
 local myselector = BehaviourTree.Random:new({
-  title = 'my random selector',
   nodes = {
     -- here comes in a list of nodes (Tasks, Sequences or Priorities)
     -- as objects or as registered strings
@@ -97,7 +94,6 @@ Creating a behavior tree is fairly simple. Just instantiate the `BehaviourTree` 
 
 ``` lua
 local mytree = BehaviourTree:new({
-  title = 'tree1',  -- this is optional but useful if error happens
   tree = 'a selector' -- the value of tree can be either string (which is the registered name of a node), or any node
 })
 ```
@@ -131,7 +127,6 @@ And now an example of how all could work together.
 
 ``` lua
 BehaviourTree.register('bark', BehaviourTree.Task:new({
-  title = 'bark',
   run = function(self, dog)
     dog:bark()
     self:success()
@@ -139,12 +134,10 @@ BehaviourTree.register('bark', BehaviourTree.Task:new({
 }))
 
 local btree = BehaviourTree:new({
-  title = 'dog behaviors',
   tree = BehaviourTree.Sequence:new({
     nodes: {
       'bark',
       BehaviourTree.Task:new({
-        title = 'walk',
         run = function(self, dog)
           dog:randomlyWalk()
           self:success()
@@ -152,7 +145,6 @@ local btree = BehaviourTree:new({
       }),
       'bark',
       BehaviourTree.Task:new({
-        title = 'mark tree',
         run = function(self, dog) 
           if dog:standBesideATree() then
             dog:liftALeg()
@@ -186,14 +178,12 @@ But it is useful as base class for new implementations, like the implemented `In
 
 ``` lua
 local mysequence = BehaviourTree.Sequence:new({
-  title = 'my sequence',
   nodes = {
     -- here comes in a list of nodes (Tasks, Sequences or Priorities)
     -- as objects or as registered strings
   }
 })
 local decoratedSequence = BehaviourTree.InvertDecorator:new({
-  title: 'decorated sequence',
   node: mysequence
 })
 ```

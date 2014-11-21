@@ -3,11 +3,7 @@ local registeredNodes = {}
 local Registry = {}
 
 function Registry.register(name, node)
-  if type(name) == 'string' then
-    registeredNodes[name] = node;
-  else -- name is the node 
-    registeredNodes[name.title] = name;
-  end
+  registeredNodes[name] = node;
 end
 
 function Registry.getNode(name)

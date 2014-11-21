@@ -4,20 +4,20 @@ local BehaviourTree = require 'behaviour_tree'
 describe('BranchNode', function()
   local selector
   describe('can be constructed with', function()
-    describe("an object containing it's title", function()
+    describe("an object containing its nodes", function()
       before_each(function()
-        selector = BehaviourTree.BranchNode:new({ title = 'choose' })
+        selector = BehaviourTree.BranchNode:new({ nodes = 'choose' })
       end)
 
-      it('and the title is saved on the instance', function()
-        assert.are.equal(selector.title, 'choose')
+      it('and the nodes are saved on the instance', function()
+        assert.are.equal(selector.nodes, 'choose')
       end)
     end)
   end)
 
   describe('instance', function()
     before_each(function()
-      selector = BehaviourTree.BranchNode:new({ title = 'selector' })
+      selector = BehaviourTree.BranchNode:new({ })
     end)
 
     it('has the same methods like a Node instance', function()
@@ -50,7 +50,6 @@ describe('BranchNode', function()
         finish = function() endCalled = endCalled + 1 end
       })
       selector = BehaviourTree.BranchNode:new({
-        title = 'call it selector',
         nodes = { node }
       })
     end)
@@ -96,7 +95,6 @@ describe('BranchNode', function()
         end
       })
       selector = BehaviourTree.BranchNode:new({
-        title = 'test me',
         nodes = { node }
       })
       selector:run(testObj)
@@ -124,7 +122,6 @@ describe('BranchNode', function()
         end
       })
       selector = BehaviourTree.BranchNode:new({
-        title = 'test me twice',
         nodes = { node }
       })
     end)

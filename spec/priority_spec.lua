@@ -4,20 +4,20 @@ local BehaviourTree = require 'behaviour_tree'
 describe('Priority selector', function()
   local selector
   describe('can be constructed with', function()
-    describe("an object containing it's title", function()
+    describe("an object containing it's nodes", function()
       before_each(function()
-        selector = BehaviourTree.Priority:new({ title = 'choose' })
+        selector = BehaviourTree.Priority:new({ nodes = 'choose' })
       end)
 
-      it('and the title is saved on the instance', function()
-        assert.are.equal(selector.title, 'choose')
+      it('and the nodes is saved on the instance', function()
+        assert.are.equal(selector.nodes, 'choose')
       end)
     end)
   end)
 
   describe('instance', function()
     before_each(function()
-      selector = BehaviourTree.Priority:new({ title = 'selector' })
+      selector = BehaviourTree.Priority:new({ })
     end)
 
     it('has the same methods like a BranchNode instance', function()
@@ -55,7 +55,6 @@ describe('Priority selector', function()
         finish = function() endCalled1 = true end
       })
       selector = BehaviourTree.Priority:new({
-        title = 'a selector',
         nodes = {
           node,
           BehaviourTree.Node:new({
@@ -112,7 +111,6 @@ describe('Priority selector', function()
       parentSuccessCalled = false
       parentFailCalled = false
       selector = BehaviourTree.Priority:new({
-        title = 'a selector',
         nodes = {
           BehaviourTree.Node:new({
             run = function(self) 
@@ -127,7 +125,6 @@ describe('Priority selector', function()
       })
 
       parentSelector = BehaviourTree.Priority:new({
-        title = 'parent',
         nodes = { selector },
         success = function()
           parentSuccessCalled = true

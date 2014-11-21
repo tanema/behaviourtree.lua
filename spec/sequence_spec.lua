@@ -4,22 +4,20 @@ local BehaviourTree = require 'behaviour_tree'
 describe('Sequence', function()
   local sequence
   describe('can be constructed with', function()
-    describe("an object containing it's title", function()
+    describe("an object containing it's nodes", function()
       before_each(function()
-        sequence = BehaviourTree.Sequence:new({ title = 'runAll' })
+        sequence = BehaviourTree.Sequence:new({ nodes = 'runAll' })
       end)
 
-      it('and the title is saved on the instance', function()
-        assert.are.equal(sequence.title, 'runAll')
+      it('and the nodes is saved on the instance', function()
+        assert.are.equal(sequence.nodes, 'runAll')
       end)
     end)
   end)
 
   describe('instance', function()
     before_each(function()
-      sequence = BehaviourTree.Sequence:new({
-        title = 'sequence'
-      })
+      sequence = BehaviourTree.Sequence:new({ })
     end)
 
     it('has the same methods like a BranchNode instance', function()
@@ -57,7 +55,6 @@ describe('Sequence', function()
         finish = function() endCalled1 = true end
       })
       selector = BehaviourTree.Sequence:new({
-        title = 'a sequence',
         nodes = {
           node,
           BehaviourTree.Node:new({
@@ -111,7 +108,6 @@ describe('Sequence', function()
       parentSuccessCalled = false
       parentFailCalled = false
       selector = BehaviourTree.Sequence:new({
-        title = 'a sequence',
         nodes = {
           BehaviourTree.Node:new({
             run = function(self) 
@@ -126,7 +122,6 @@ describe('Sequence', function()
       })
 
       parentSelector = BehaviourTree.Sequence:new({
-        title = 'parent',
         nodes = { selector },
         success = function()
           parentSuccessCalled = true

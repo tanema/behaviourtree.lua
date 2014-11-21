@@ -19,7 +19,6 @@ BehaviourTree.getNode = Registry.getNode
 
 function BehaviourTree:initialize(config)
   self.config    = config and config or {}
-  self.title     = self.config.title and self.config.title or 'btree' .. (os.time());
   self.rootNode = self.config.tree;
   self.object   = self.config.object;
 end
