@@ -54,7 +54,7 @@ end
 function myothertask:run(obj)
   self:success()
 end
---however the other syntax lends building an inline table
+--however the other syntax better lends itself to building an inline table
 ```
 
 The methods:
