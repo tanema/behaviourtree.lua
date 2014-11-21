@@ -23,7 +23,7 @@ function BehaviourTree:run(object)
     self:running()
   else
     self.started = true
-    slef.object = object or self.object
+    self.object = object or self.object
     self.rootNode = Registry.getNode(self.tree)
     self.rootNode:setControl(self)
     self.rootNode:start(self.object)
