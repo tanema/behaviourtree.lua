@@ -38,15 +38,15 @@ function BehaviourTree:running()
 end
 
 function BehaviourTree:success()
-  Node.success(self)
   self.rootNode:finish(self.object);
   self.started = false
+  Node.success(self)
 end
 
 function BehaviourTree:fail()
-  Node.fail(self)
   self.rootNode:finish(self.object);
   self.started = false
+  Node.fail(self)
 end
 
 return BehaviourTree

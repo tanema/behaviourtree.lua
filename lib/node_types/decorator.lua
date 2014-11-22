@@ -14,7 +14,6 @@ function Decorator:setNode(node)
 end
 
 function Decorator:start(object)
-  self.node:setControl(self)
   self.node:start(object)
 end
 
@@ -23,6 +22,7 @@ function Decorator:finish(object)
 end
 
 function Decorator:run(object)
+  self.node:setControl(self)
   self.node:run(object)
 end
 
