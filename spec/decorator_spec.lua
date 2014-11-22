@@ -1,127 +1,138 @@
 require 'spec/custom_asserts'
 local BehaviourTree = require 'lib/behaviour_tree'
+local Decorator = BehaviourTree.Decorator
 
 describe('Decorator', function()
-  local decorator, node, lastBlackboard, calledStart, calledEnd, calledRun
+  local subject
   before_each(function()
-    lastBlackboard = false
-    calledStart = false
-    calledEnd = false
-    calledRun = false
-    node = BehaviourTree.Node:new({
-      start = function() calledStart = true end,
-      finish = function() calledEnd = true end,
-      run = function(self, blackboard, cb)
-        lastBlackboard = blackboard 
-        calledRun = true 
-        if cb ~= nil then
-          cb(self) 
-        end
-      end 
-    })
+    subject = Decorator:new()
   end)
 
-  describe('can be constructed with', function()
-    describe('an object containing it\'s node', function()
-      before_each(function()
-        decorator = BehaviourTree.Decorator:new({
-          node = node
-        })
-      end)
-
-      it('and the node is saved on the instance', function()
-        assert.are.equal(decorator.node, node)
-      end)
+  describe(':initialize', function()
+    it('should copy any attributes to the node', function()
+      local node = Decorator:new({testfield = 'foobar'})
+      assert.is_equal(node.testfield, 'foobar')
     end)
-
-    describe('an object containing no nodes', function()
-      before_each(function()
-        BehaviourTree.register('aNode',node)
-        decorator = BehaviourTree.Decorator:new({ })
-      end)
-
-      it('and the node is null', function()
-        assert.are.equal(decorator.node, undefined)
-      end)
-
-      it('and we can set the node afterwards', function()
-        decorator:setNode(node)
-        assert.are.equal(decorator.node, node)
-      end)
-
-      it('and we can set the node afterwards by its title', function()
-        decorator:setNode('aNode')
-        assert.are.equal(decorator.node, node)
-      end)
+    it('should register the node if the name is set', function()
+      local node = Decorator:new({name = 'foobar'})
+      assert.is_equal(BehaviourTree.getNode('foobar'), node)
     end)
-
-    describe('an object containing the title of the node', function()
-      before_each(function()
-        decorator = BehaviourTree.Decorator:new({
-          node = 'aNode'
-        })
-      end)
-
-      it('and the node is saved on the instance', function()
-        assert.are.equal(decorator.node:isInstanceOf(BehaviourTree.Node), true)
-      end)
+    it('should get the node from the registry', function()
+      local s = spy.on(BehaviourTree.Registry, 'getNode')
+      Decorator:new({node = 'foobar'})
+      assert.spy(s).was.called_with('foobar')
+      BehaviourTree.Registry.getNode:revert()
     end)
   end)
 
-  describe('when having a default Decorator', function()
+  describe(':setNode', function()
+    it('should set the node', function()
+      local task = BehaviourTree.Task:new()
+      subject:setNode(task)
+      assert.is_equal(subject.node,task)
+    end)
+    it('should get the node from the registry', function()
+      local s = spy.on(BehaviourTree.Registry, 'getNode')
+      subject:setNode('foobar')
+      assert.spy(s).was.called_with('foobar')
+      BehaviourTree.Registry.getNode:revert()
+    end)
+  end)
+
+  describe(':start', function()
+    local task
     before_each(function()
-      isRunning = false
-      hasFailed = false
-      didSucceed = false
-      decorator = BehaviourTree.Decorator:new({
-        node = node
-      })
+      task = BehaviourTree.Task:new()
+      subject:setNode(task)
     end)
-
-    it('it just passes on start method', function()
-      decorator:start()
-      assert.are.equal(calledStart, true)
+    it('should set control on the node', function()
+      stub(task, 'setControl')
+      subject:start('foobar')
+      assert.stub(task.setControl).was.called_with(task, subject)
     end)
-
-    it('it just passes on finish method', function()
-      decorator:finish()
-      assert.are.equal(calledEnd, true)
+    it('should call start on the node', function()
+      stub(task, 'start')
+      subject:start('foobar')
+      assert.stub(task.start).was.called_with(task, 'foobar')
     end)
-
-    it('it just passes on run method (with the blackboard object)', function()
-      local blackboard = 42
-      decorator:run(blackboard, function() end)
-      assert.are.equal(calledRun, true)
-      assert.are.equal(lastBlackboard, blackboard)
-    end)
-
-    describe('it just passes through the', function()
-      local isRunning, hasFailed, didSucceed
-      before_each(function()
-        decorator:setControl({
-          running = function() isRunning = true end,
-          fail = function() hasFailed = true end,
-          success = function() didSucceed = true end
-        })
-        decorator:start()
-      end)
-
-      it('success state', function()
-        node:run(null, function(self) self:success() end)
-        assert.are.equal(didSucceed, true)
-      end)
-
-      it('fail state', function()
-        node:run(null, function(self) self:fail() end)
-        assert.are.equal(hasFailed, true)
-      end)
-
-      it('running state', function()
-        node:run(null, function(self) self:running() end)
-        assert.are.equal(isRunning, true)
-      end)
-    end)
-
   end)
+
+  describe(':finish', function()
+    local task
+    before_each(function()
+      task = BehaviourTree.Task:new()
+      subject:setNode(task)
+    end)
+    it('should call finish on the node', function()
+      stub(task, 'finish')
+      subject:finish('foobar')
+      assert.stub(task.finish).was.called_with(task, 'foobar')
+    end)
+  end)
+
+  describe(':run', function()
+    local task
+    before_each(function()
+      task = BehaviourTree.Task:new()
+      subject:setNode(task)
+    end)
+    it('should call run on the node', function()
+      stub(task, 'run')
+      subject:run('foobar')
+      assert.stub(task.run).was.called_with(task, 'foobar')
+    end)
+  end)
+
+  describe(':setObject', function()
+    it('should set the object on the node', function()
+      subject:setObject('foobar')
+      assert.is_equal(subject.object, 'foobar')
+    end)
+  end)
+
+  describe(':setControl', function()
+    it('should set the controller on the node', function()
+      subject:setControl('foobar')
+      assert.is_equal(subject.control, 'foobar')
+    end)
+  end)
+
+  describe(':running', function()
+    it('should call running on the control if control defined', function()
+      subject.control = {}
+      stub(subject.control, 'running')
+      subject:running()
+      assert.stub(subject.control.running).was.called()
+    end)
+    it('should do nothing if has no control', function()
+      -- testing no error here
+      subject:running()
+    end)
+  end)
+
+  describe(':success', function()
+    it('should call success on the control if control defined', function()
+      subject.control = {}
+      stub(subject.control, 'success')
+      subject:success()
+      assert.stub(subject.control.success).was.called()
+    end)
+    it('should do nothing if has no control', function()
+      subject:success()
+    end)
+  end)
+
+  describe(':fail', function()
+    it('should call fail on the control if control defined', function()
+      subject.control = {}
+      stub(subject.control, 'fail')
+      subject:fail()
+      assert.stub(subject.control.fail).was.called()
+    end)
+    it('should do nothing if has no control', function()
+      subject:fail()
+    end)
+  end)
+
 end)
 
