@@ -23,7 +23,7 @@ end
 
 function Decorator:run(object)
   self.node:setControl(self)
-  self.node:run(object)
+  self.node:call_run(object)
 end
 
 return Decorator

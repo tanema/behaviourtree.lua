@@ -4,20 +4,20 @@ local count
 local looking = BT.Task:new()
 function looking:run()
   print("looking")
-  self:success()
+  success()
 end
-local running = BT.Task:new()
-function running:run()
+local runningTask = BT.Task:new()
+function runningTask:run()
   print("running")
   if count == 10 then
-    self:success()
+    success()
   else
-    self:running()
+    running()
   end
 end
  
 BT.register('looking', looking)
-BT.register('running', running)
+BT.register('running', runningTask)
 
 local Frank = BT:new({
   tree = BT.Sequence:new({

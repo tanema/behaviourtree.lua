@@ -21,25 +21,25 @@ A task is a simple `Node` (to be precise a leafnode), which takes care of all th
 local mytask = BehaviourTree.Task:new({
   -- (optional) this function is called directly before the run method
   -- is called. It allows you to setup things before starting to run
-  -- Beware: if task is resumed after calling this.running(), start is not called.
-  start = function(self, obj)
+  -- Beware: if task is resumed after calling running(), start is not called.
+  start = function(task, obj)
     obj.isStarted = true
   end,
 
   -- (optional) this function is called directly after the run method
-  -- is completed with either this.success() or this.fail(). It allows you to clean up
+  -- is completed with either success() or fail(). It allows you to clean up
   -- things, after you run the task.
-  finish = function(self, obj)
+  finish = function(task, obj)
     obj.isStarted = false
   end,
 
   -- This is the meat of your task. The run method does everything you want it to do.
   -- Finish it with one of these method calls:
-  -- this.success() - The task did run successfully
-  -- this.fail()    - The task did fail
-  -- this.running() - The task is still running and will be called directly from parent node
-  run = function(self, obj)
-    self:success()
+  -- success() - The task did run successfully
+  -- fail()    - The task did fail
+  -- running() - The task is still running and will be called directly from parent node
+  run = function(task, obj)
+    success()
   end
 });
 
@@ -52,15 +52,15 @@ function myothertask:finish(obj)
   obj.isStarted = false
 end
 function myothertask:run(obj)
-  self:success()
+  success()
 end
 --however the other syntax better lends itself to building an inline table
 ```
 
 The methods:
 
-* `start`  - Called before run is called. But not if task is resuming after ending with self:running().
-* `finish` - Called after run is called. But not if task finished with self:running().
+* `start`  - Called before run is called. But not if task is resuming after ending with running().
+* `finish` - Called after run is called. But not if task finished with running().
 * `run`    - Contains the main things you want the task is doing.
 
 The interesting part:
@@ -153,7 +153,7 @@ And now an example of how all could work together.
 BehaviourTree.register('bark', BehaviourTree.Task:new({
   run = function(self, dog)
     dog:bark()
-    self:success()
+    success()
   end
 }))
 
@@ -164,7 +164,7 @@ local btree = BehaviourTree:new({
       BehaviourTree.Task:new({
         run = function(self, dog)
           dog:randomlyWalk()
-          self:success()
+          success()
         end
       }),
       'bark',
@@ -173,9 +173,9 @@ local btree = BehaviourTree:new({
           if dog:standBesideATree() then
             dog:liftALeg()
             dog:pee()
-            self:success()
+            success()
           else
-            self:fail()
+            fail()
           end
         end
       }),

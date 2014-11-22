@@ -7,7 +7,7 @@ local Frank = BT:new({
       BT.Task:new({
         run = function(self, object)
           print(object.name .. " looking")
-          self:success()
+          success()
         end
       }),
       BT.Random:new({
@@ -15,25 +15,25 @@ local Frank = BT:new({
           BT.Task:new({
             run = function(self, object)
               print(object.name .. " walk left")
-              self:success()
+              success()
             end
           }),
           BT.Task:new({
             run = function(self, object)
               print(object.name .. " walk up")
-              self:success()
+              success()
             end
           }),
           BT.Task:new({
             run = function(self, object)
               print(object.name .. " walk right")
-              self:success()
+              success()
             end
           }),
           BT.Task:new({
             run = function(self, object)
               print(object.name .. " walk down")
-              self:success()
+              success()
             end
           }),
         }

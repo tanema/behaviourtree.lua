@@ -18,6 +18,13 @@ function Node:start() end
 function Node:finish() end
 function Node:run() end
 
+function Node:call_run(object)
+  function success() self:success() end
+  function fail()    self:fail() end
+  function running() self:running() end
+  self.run(object)
+end
+
 function Node:setObject(object)
   self.object = object
 end

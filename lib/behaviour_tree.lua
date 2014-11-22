@@ -28,7 +28,7 @@ function BehaviourTree:run(object)
     self.rootNode = Registry.getNode(self.tree)
     self.rootNode:setControl(self)
     self.rootNode:start(self.object)
-    self.rootNode:run(self.object)
+    self.rootNode:call_run(self.object)
   end
 end
 
