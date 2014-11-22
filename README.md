@@ -131,10 +131,8 @@ mytree:run();
 If you need the same nodes multiple times in a tree (or even in different trees), there is an easy method to register this nodes, so you can simply reference it by given name.
 
 ``` lua
--- register a task:
+-- register a tree node using the registry
 BehaviourTree.register('testtask', mytask)
--- or register a sequence or priority:
-BehaviourTree.register('test sequence', mysequence)
 -- or register anything automatically by giving it a name
 BehaviourTree.Task:new({
   name = 'registered task'
@@ -150,12 +148,13 @@ Now you can simply use it by name
 And now an example of how all could work together.
 
 ``` lua
-BehaviourTree.register('bark', BehaviourTree.Task:new({
+BehaviourTree.Task:new({
+  name = 'bark',
   run = function(self, dog)
     dog:bark()
     success()
   end
-}))
+})
 
 local btree = BehaviourTree:new({
   tree = BehaviourTree.Sequence:new({
