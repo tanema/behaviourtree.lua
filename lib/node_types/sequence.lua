@@ -3,14 +3,6 @@ local class = require(_PACKAGE..'/middleclass')
 local BranchNode  = require(_PACKAGE..'/node_types/branch_node')
 local Sequence = class('Sequence', BranchNode)
 
-function Sequence:_run(object)
-  if self.nodeRunning then
-    self.nodeRunning:run(object)
-  else
-    BranchNode._run(self, object)
-  end
-end
-
 function Sequence:success()
   BranchNode.success(self)
   self.actualTask = self.actualTask + 1

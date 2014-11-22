@@ -2,230 +2,195 @@ require 'spec/custom_asserts'
 local BehaviourTree = require 'lib/behaviour_tree'
 
 describe('Random', function()
-  local random
-  describe('can be constructed with', function()
-    describe('an object containing it\'s nodes', function()
-      before_each(function()
-        random = BehaviourTree.Random:new({ nodes = 'runAny' })
-      end)
+  local subject
+  before_each(function()
+    subject = BehaviourTree.Random:new({})
+  end)
 
-      it('and the nodes is saved on the instance', function()
-        assert.are.equal(random.nodes, 'runAny')
-      end)
+  describe(':initialize', function()
+    it('should copy any attributes to the node', function()
+      local node = BehaviourTree:new({testfield = 'foobar'})
+      assert.is_equal(node.testfield, 'foobar')
+    end)
+    it('should register the node if the name is set', function()
+      local node = BehaviourTree:new({name = 'foobar'})
+      assert.is_equal(BehaviourTree.getNode('foobar'), node)
     end)
   end)
 
-  describe('instance', function()
+  describe(':start', function()
     before_each(function()
-      random = BehaviourTree.Random:new({ })
+      subject.nodes = {'a', 'b', 'c'}
     end)
-
-    it('has the same methods like a BranchNode instance', function()
-      assert.is_function(random._run)
-      assert.is_function(random.run)
-      assert.is_function(random.start)
-      assert.is_function(random.finish)
-      assert.is_function(random.running)
-      assert.is_function(random.success)
-      assert.is_function(random.fail)
+    it('should set the object', function()
+      assert.is_nil(subject.object)
+      subject:start('foobar')
+      assert.is_equal(subject.object, 'foobar')
+    end)
+    it('should set actualTask', function()
+      assert.is_nil(subject.actualTask)
+      subject:start()
+      assert.is_not_nil(subject.actualTask)
+    end)     
+    it('should call a random number', function()
+      local s = spy.on(math, 'random')
+      subject:start()
+      assert.spy(s).was.called()
+      math.random:revert()
     end)
   end)
 
-  describe('when having a RandomSelector with two nodes', function()
-    local node1, node2, hasRun1, beSuccess, willRun, startCalled1, endCalled1,
-        hasRun2, startCalled2, endCalled2, selector
+  describe(':finish', function()
+    it('has a finish method', function()
+      assert.is_function(subject.finish)
+    end)
+  end)
 
+  describe(':run', function()
+    it('should call _run if it still has tasks', function()
+      subject.nodes = {BehaviourTree.Task:new()}
+      subject:start()
+      stub(subject, '_run')
+      subject:run()
+      assert.stub(subject._run).was.called()
+    end)
+    it('should not call run if it has no tasks', function()
+      subject.nodes = {}
+      subject:start()
+      stub(subject, '_run')
+      subject:run()
+      assert.stub(subject._run).was_not.called()
+    end)
+  end)
+
+  describe(':_run', function()
+    local node
     before_each(function()
-      beSuccess = true
-      hasRun1 = 0
-      hasRun2 = 0
-      startCalled1 = false
-      endCalled1 = false
-      startCalled2 = false
-      endCalled2 = false
-      node1 = BehaviourTree.Node:new({
-        run = function(self)
-          hasRun1 = hasRun1 + 1
-          if willRun then
-            self:running()
-          elseif beSuccess then
-            self:success()
-          else 
-            self:fail()
-          end
-        end,
-        start = function() startCalled1 = true end,
-        finish = function() endCalled1 = true end
-      })
-      node2 = BehaviourTree.Node:new({
-        run = function(self)
-          hasRun2 = hasRun2 + 1
-          if willRun then
-            self:running()
-          elseif beSuccess then
-            self:success()
-          else
-            self:fail()
-          end
-        end,
-        start = function() startCalled2 = true end,
-        finish = function() endCalled2 = true end
-      })
-      selector = BehaviourTree.Random:new({
-        nodes = {
-          node1,
-          node2
-        }
-      })
-      selector:setControl({
-        running = function() end,
-        success = function() end,
-        fail = function() end
-      })
+      node = BehaviourTree.Task:new() 
+      subject.nodes = {node}
+      subject:start()
     end)
 
-    describe('if task will be success', function()
-      local old_rand = math.random
-      before_each(function()
-        beSuccess = true
-        math.random = function() return 0.7 end
-        selector:run()
-      end)
-
-      after_each(function()
-        math.random = old_rand
-      end)
-
-      it('runs randomly one task', function()
-        assert.are.equal(hasRun1, 0)
-        assert.truthy(hasRun2)
-      end)
-
-      it('starts randomly only one task', function()
-        assert.falsy(startCalled1)
-        assert.truthy(startCalled2)
-      end)
+    it('should set the current node', function()
+      subject:_run()
+      assert.is_equal(subject.node, node)
     end)
-
-    describe('if task will fail', function()
-      local old_rand = math.random
-      before_each(function()
-        beSuccess = false
-        math.random = function() return 0.7 end
-        selector:run()
-      end)
-
-      after_each(function()
-        math.random = old_rand
-      end)
-
-      it('runs randomly only that one task', function()
-        assert.are.equal(hasRun1, 0)
-        assert.truthy(hasRun2)
-      end)
-
-      it('starts randomly only that one task', function()
-        assert.falsy(startCalled1)
-        assert.truthy(startCalled2)
-      end)
+    it('should get the current node from the registry', function()
+      BehaviourTree.register('mynode', node)
+      subject.nodes = {'mynode'}
+      subject:_run()
+      assert.is_equal(subject.node, node)
     end)
-
-    describe('if task will return running', function()
-      local old_rand = math.random
-      before_each(function()
-        willRun = true
-        math.random = function() return 0.7 end
-        selector:run()
-      end)
-
-      after_each(function()
-        math.random = old_rand
-      end)
-
-      it('will run that one again on run() and only start it once', function()
-        assert.are.equal(hasRun1, 0)
-        assert.are.equal(hasRun2, 1)
-        assert.truthy(startCalled2)
-
-        startCalled2 = false
-        math.random = function() return 0.3 end
-        selector:run()
-        assert.are.equal(hasRun1, 0)
-        assert.are.equal(hasRun2, 2)
-        assert.falsy(startCalled2)
-
-        math.random = function() return 0.1 end
-        selector:run()
-        assert.are.equal(hasRun1, 0)
-        assert.are.equal(hasRun2, 3)
-        assert.falsy(startCalled2)
-      end)
-
-      it('starts randomly only that one task', function()
-        assert.falsy(startCalled1)
-        assert.truthy(startCalled2)
-      end)
+    it('should set the current nodes control', function()
+      stub(node, 'setControl')
+      subject:_run()
+      assert.stub(node.setControl).was.called_with(node, subject)
+    end)
+    it('should call start on the current node if first run', function()
+      stub(node, 'start')
+      subject:_run('foo')
+      assert.stub(node.start).was.called_with(node, 'foo')
+    end)
+    it('should not call start on the current node if running', function()
+      subject.node = node
+      subject.nodeRunning = true
+      stub(node, 'start')
+      subject:_run()
+      assert.stub(node.start).was_not.called()
+    end)
+    it('should call run on the current node', function()
+      stub(node, 'run')
+      subject:_run('foo')
+      assert.stub(node.run).was.called_with(node, 'foo')
     end)
   end)
 
-  describe('when in RandomSelector with two nodes', function()
-    local parentSelector, beSuccess, willRun, parentSuccessCalled, parentFailCalled, parentRunningCalled, selector
+  describe(':setObject', function()
+    it('should set the object on the node', function()
+      subject:setObject('foobar')
+      assert.is_equal(subject.object, 'foobar')
+    end)
+  end)
+
+  describe(':setControl', function()
+    it('should set the controller on the node', function()
+      subject:setControl('foobar')
+      assert.is_equal(subject.control, 'foobar')
+    end)
+  end)
+
+  describe(':running', function()
+    local node
     before_each(function()
-      beSuccess = true
-      parentSuccessCalled = false
-      parentFailCalled = false
-      selector = BehaviourTree.Random:new({
-        nodes = {
-          BehaviourTree.Node:new({
-            run = function(self)
-              if willRun then
-                self:running()
-              elseif beSuccess then
-                self:success()
-              else
-                self:fail()
-              end
-            end
-          })
-        }
-      })
-
-      parentSelector = BehaviourTree.Random:new({
-        nodes = { selector },
-        running = function()
-          parentRunningCalled = true
-        end,
-        success = function()
-          parentSuccessCalled = true
-        end,
-        fail = function()
-          parentFailCalled = true
-        end
-      })
+      node = BehaviourTree.Task:new() 
+      subject.control = {running = function()end}
+      subject.node = node
     end)
-
-    describe('all task result in success', function()
-      it('calls success also in parent node', function()
-        beSuccess = true
-        parentSelector:run()
-        assert.truthy(parentSuccessCalled)
-      end)
+    it('should set nodeRunning', function()
+      subject:running()
+      assert.is_true(subject.nodeRunning)
     end)
-
-    describe('a task results in failure', function()
-      it('calls fail also in parent node', function()
-        beSuccess = false
-        parentSelector:run()
-        assert.truthy(parentFailCalled)
-      end)
-    end)
-
-    describe('a task resulting in running', function()
-      it('calls running also in parent node', function()
-        willRun = true
-        parentSelector:run()
-        assert.truthy(parentRunningCalled)
-      end)
+    it('should call running on control', function()
+      stub(subject.control, 'running')
+      subject:running()
+      assert.stub(subject.control.running).was.called()
     end)
   end)
+
+  describe(':success', function()
+    local node
+    before_each(function()
+      node = BehaviourTree.Task:new() 
+      subject.control = {success = function()end}
+      subject.nodeRunning = true
+      subject.node = node
+    end)
+    it('should set nodeRunning as nil', function()
+      subject:success()
+      assert.is_false(subject.nodeRunning)
+    end)
+    it('should call finish on current node', function()
+      stub(node, 'finish')
+      subject:success()
+      assert.stub(node.finish).was.called()
+    end)
+    it('should set current node as nil', function()
+      subject:success()
+      assert.is_nil(subject.node)
+    end)
+    it('should call success on control', function()
+      stub(subject.control, 'success')
+      subject:success()
+      assert.stub(subject.control.success).was.called()
+    end)
+  end)
+
+  describe(':fail', function()
+    local node
+    before_each(function()
+      node = BehaviourTree.Task:new() 
+      subject.control = {fail = function()end}
+      subject.nodeRunning = true
+      subject.node = node
+    end)
+    it('should set nodeRunning as nil', function()
+      subject:fail()
+      assert.is_false(subject.nodeRunning)
+    end)
+    it('should call finish on current node', function()
+      stub(node, 'finish')
+      subject:fail()
+      assert.stub(node.finish).was.called()
+    end)
+    it('should set current node as nil', function()
+      subject:fail()
+      assert.is_nil(subject.node)
+    end)
+    it('should call fail on control', function()
+      stub(subject.control, 'fail')
+      subject:fail()
+      assert.stub(subject.control.fail).was.called()
+    end)
+  end)
+
 end)

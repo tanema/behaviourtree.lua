@@ -2,151 +2,190 @@ require 'spec/custom_asserts'
 local BehaviourTree = require 'lib/behaviour_tree'
 
 describe('Sequence', function()
-  local sequence
-  describe('can be constructed with', function()
-    describe("an object containing it's nodes", function()
-      before_each(function()
-        sequence = BehaviourTree.Sequence:new({ nodes = 'runAll' })
-      end)
+  local subject
+  before_each(function()
+    subject = BehaviourTree.Sequence:new({})
+  end)
 
-      it('and the nodes is saved on the instance', function()
-        assert.are.equal(sequence.nodes, 'runAll')
-      end)
+  describe(':initialize', function()
+    it('should copy any attributes to the node', function()
+      local node = BehaviourTree:new({testfield = 'foobar'})
+      assert.is_equal(node.testfield, 'foobar')
+    end)
+    it('should register the node if the name is set', function()
+      local node = BehaviourTree:new({name = 'foobar'})
+      assert.is_equal(BehaviourTree.getNode('foobar'), node)
     end)
   end)
 
-  describe('instance', function()
+  describe(':start', function()
+    it('should set the object', function()
+      assert.is_nil(subject.object)
+      subject:start('foobar')
+      assert.is_equal(subject.object, 'foobar')
+    end)
+    it('should set actualTask', function()
+      assert.is_nil(subject.actualTask)
+      subject:start()
+      assert.is_equal(subject.actualTask, 1)
+    end)
+  end)
+
+  describe(':finish', function()
+    it('has a finish method', function()
+      assert.is_function(subject.finish)
+    end)
+  end)
+
+  describe(':run', function()
+    it('should call _run if it still has tasks', function()
+      subject.nodes = {BehaviourTree.Task:new()}
+      subject:start()
+      stub(subject, '_run')
+      subject:run()
+      assert.stub(subject._run).was.called()
+    end)
+    it('should not call run if it has no tasks', function()
+      subject.nodes = {}
+      subject:start()
+      stub(subject, '_run')
+      subject:run()
+      assert.stub(subject._run).was_not.called()
+    end)
+  end)
+
+  describe(':_run', function()
+    local node
     before_each(function()
-      sequence = BehaviourTree.Sequence:new({ })
+      node = BehaviourTree.Task:new() 
+      subject.nodes = {node}
+      subject:start()
     end)
 
-    it('has the same methods like a BranchNode instance', function()
-      assert.is_function(sequence._run)
-      assert.is_function(sequence.run)
-      assert.is_function(sequence.start)
-      assert.is_function(sequence.finish)
-      assert.is_function(sequence.running)
-      assert.is_function(sequence.success)
-      assert.is_function(sequence.fail)
+    it('should set the current node', function()
+      subject:_run()
+      assert.is_equal(subject.node, node)
+    end)
+    it('should get the current node from the registry', function()
+      BehaviourTree.register('mynode', node)
+      subject.nodes = {'mynode'}
+      subject:_run()
+      assert.is_equal(subject.node, node)
+    end)
+    it('should set the current nodes control', function()
+      stub(node, 'setControl')
+      subject:_run()
+      assert.stub(node.setControl).was.called_with(node, subject)
+    end)
+    it('should call start on the current node if first run', function()
+      stub(node, 'start')
+      subject:_run('foo')
+      assert.stub(node.start).was.called_with(node, 'foo')
+    end)
+    it('should not call start on the current node if running', function()
+      subject.node = node
+      subject.nodeRunning = true
+      stub(node, 'start')
+      subject:_run()
+      assert.stub(node.start).was_not.called()
+    end)
+    it('should call run on the current node', function()
+      stub(node, 'run')
+      subject:_run('foo')
+      assert.stub(node.run).was.called_with(node, 'foo')
     end)
   end)
 
-  describe('when having a Sequence with two nodes', function()
-    local node, hasRun1, beSuccess1, startCalled1, endCalled1,
-        hasRun2, startCalled2, endCalled2
+  describe(':setObject', function()
+    it('should set the object on the node', function()
+      subject:setObject('foobar')
+      assert.is_equal(subject.object, 'foobar')
+    end)
+  end)
+
+  describe(':setControl', function()
+    it('should set the controller on the node', function()
+      subject:setControl('foobar')
+      assert.is_equal(subject.control, 'foobar')
+    end)
+  end)
+
+  describe(':running', function()
+    local node
     before_each(function()
-      beSuccess1 = true
-      hasRun1 = false
-      startCalled1 = false
-      endCalled1 = false
-      hasRun2 = false
-      startCalled2 = false
-      endCalled2 = false
-      node = BehaviourTree.Node:new({
-        run = function(self)
-          hasRun1 = true
-          if beSuccess1 then
-            self:success()
-          else
-            self:fail()
-          end
-        end,
-        start = function() startCalled1 = true end,
-        finish = function() endCalled1 = true end
-      })
-      selector = BehaviourTree.Sequence:new({
-        nodes = {
-          node,
-          BehaviourTree.Node:new({
-            run = function(self) hasRun2 = true self:success() end,
-            start = function() startCalled2 = true end,
-            finish = function() endCalled2 = true end
-          })
-        }
-      })
-      selector:setControl({
-        success = function() end,
-        fail = function() end
-      })
+      node = BehaviourTree.Task:new() 
+      subject.control = {running = function()end}
+      subject.node = node
     end)
-
-    describe('if success is called by first task', function()
-      before_each(function()
-        beSuccess1 = true
-        selector:run()
-      end)
-
-      it("calls start of the next task in line", function()
-        assert.truthy(startCalled2)
-      end)
-
-      it("calls run of the next task in line", function()
-        assert.truthy(hasRun2)
-      end)
+    it('should set nodeRunning', function()
+      subject:running()
+      assert.is_true(subject.nodeRunning)
     end)
-
-    describe('if fail is called by first task', function()
-      before_each(function()
-        beSuccess1 = false
-        selector:run()
-      end)
-
-      it("does not call start of the next task in line", function()
-        assert.falsy(startCalled2)
-      end)
-
-      it("does not call run of the next task in line", function()
-        assert.falsy(hasRun2)
-      end)
+    it('should call running on control', function()
+      stub(subject.control, 'running')
+      subject:running()
+      assert.stub(subject.control.running).was.called()
     end)
   end)
 
-  describe('when in Sequence with two nodes', function()
-    local node, parentSelector, beSuccess, parentSuccessCalled, parentFailCalled
+  describe(':success', function()
+    local node
     before_each(function()
-      beSuccess = true
-      parentSuccessCalled = false
-      parentFailCalled = false
-      selector = BehaviourTree.Sequence:new({
-        nodes = {
-          BehaviourTree.Node:new({
-            run = function(self) 
-              if beSuccess then 
-                self:success()
-              else
-                self:fail()
-              end
-            end
-          })
-        }
-      })
-
-      parentSelector = BehaviourTree.Sequence:new({
-        nodes = { selector },
-        success = function()
-          parentSuccessCalled = true
-        end,
-        fail = function()
-          parentFailCalled = true
-        end
-      })
+      node = BehaviourTree.Task:new() 
+      subject.actualTask = 1
+      subject.control = {success = function()end}
+      subject.nodeRunning = true
+      subject.nodes = {node}
+      subject.node = node
     end)
-
-    describe('all task result in success', function()
-      it('calls success also in parent node', function()
-        beSuccess = true
-        parentSelector:run()
-        assert.truthy(parentSuccessCalled)
-      end)
+    it('should set nodeRunning as nil', function()
+      subject:success()
+      assert.is_false(subject.nodeRunning)
     end)
-
-    describe('a task results in failure', function()
-      it('calls fail also in parent node', function()
-        beSuccess = false
-        parentSelector:run()
-        assert.truthy(parentFailCalled)
-      end)
+    it('should call finish on current node', function()
+      stub(node, 'finish')
+      subject:success()
+      assert.stub(node.finish).was.called()
+    end)
+    it('should set current node as nil', function()
+      subject:success()
+      assert.is_nil(subject.node)
+    end)
+    it('should call success on control if no more tasks', function()
+      stub(subject.control, 'success')
+      subject:success()
+      assert.stub(subject.control.success).was.called()
+    end)
+    it('should call _run if there are more tasks', function()
+      subject.nodes = {'a', 'b'}
+      stub(subject, '_run')
+      subject:success()
+      assert.stub(subject._run).was.called()
     end)
   end)
+
+  describe(':fail', function()
+    local node
+    before_each(function()
+      node = BehaviourTree.Task:new() 
+      subject.control = {fail = function()end}
+      subject.nodeRunning = true
+      subject.node = node
+    end)
+    it('should set nodeRunning as nil', function()
+      subject:fail()
+      assert.is_false(subject.nodeRunning)
+    end)
+    it('should call finish on current node', function()
+      stub(node, 'finish')
+      subject:fail()
+      assert.stub(node.finish).was.called()
+    end)
+    it('should set current node as nil', function()
+      subject:fail()
+      assert.is_nil(subject.node)
+    end)
+  end)
+
 end)
 

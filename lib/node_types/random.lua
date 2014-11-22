@@ -3,19 +3,9 @@ local class = require(_PACKAGE..'/middleclass')
 local BranchNode  = require(_PACKAGE..'/node_types/branch_node')
 local Random = class('Random', BranchNode)
 
-function Random:start()
-  BranchNode.start(self)
-  if not self.nodeRunning then
-    self.actualTask = math.floor(math.random() * #self.nodes+1)
-  end
-end
-
-function Random:_run(object)
-  if not self.runningNode then
-    BranchNode._run(self, object)
-  else 
-    self.runningNode:run(object)
-  end
+function Random:start(object)
+  BranchNode.start(self, object)
+  self.actualTask = math.floor(math.random() * #self.nodes+1)
 end
 
 function Random:success()
