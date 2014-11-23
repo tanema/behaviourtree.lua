@@ -9,4 +9,4 @@ install:
   - sudo luarocks install luafilesystem
   - sudo luarocks install busted
 
-script: "busted $TRAVIS_BUILD_DIR/spec"
+script: "busted spec"
