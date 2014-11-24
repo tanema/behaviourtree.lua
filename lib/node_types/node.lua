@@ -19,10 +19,11 @@ function Node:finish() end
 function Node:run() end
 
 function Node:call_run(object)
-  function success() self:success() end
-  function fail()    self:fail() end
-  function running() self:running() end
+  success = function() self:success() end
+  fail = function()    self:fail() end
+  running = function() self:running() end
   self:run(object)
+  success, fail, running = nil,nil,nil
 end
 
 function Node:setObject(object)
