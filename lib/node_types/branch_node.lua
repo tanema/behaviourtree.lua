@@ -5,8 +5,10 @@ local Node  = require(_PACKAGE..'/node_types/node')
 local BranchNode = class('BranchNode', Node)
 
 function BranchNode:start(object)
-  self:setObject(object)
-  self.actualTask = 1
+  if not self.nodeRunning then
+    self:setObject(object)
+    self.actualTask = 1
+  end
 end
 
 function BranchNode:run(object)
