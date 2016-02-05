@@ -16,6 +16,7 @@ branches:
 
 before_install:
   - source .travis/setenv_lua.sh
+  - luarocks install luassert
   - luarocks install luafilesystem
   - luarocks install busted
 

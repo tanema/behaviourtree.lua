@@ -1,4 +1,5 @@
 local s = require("say")
+local assert = require 'luassert'
 
 local function is_function(state, arguments)
   if not type(arguments[1]) == "function" then
