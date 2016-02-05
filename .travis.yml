@@ -1,15 +1,22 @@
-language: erlang
-
+language: c
+sudo: false
 env:
-  - LUA="luajit"
+  global:
+    - LUAROCKS=2.3.0
+  matrix:
+    - LUA=lua5.1
+    - LUA=lua5.2
+    - LUA=lua5.3
+    - LUA=luajit     # latest stable version (2.0.4)
+    - LUA=luajit2.0  # current head of 2.0 branch
+    - LUA=luajit2.1  # current head of 2.1 branch
+branches:
+  only:
+    - master
 
-install:
-  - deb http://us.archive.ubuntu.com/ubuntu vivid main universe
-  - sudo apt-get update
-  - sudo apt-get install luajit
-  - sudo apt-get install luarocks
-  - sudo luarocks install luafilesystem
-  - sudo luarocks install busted
+before_install:
+  - luarocks install luafilesystem
+  - luarocks install busted
 
-sudo: required
 script: "busted spec"
+
