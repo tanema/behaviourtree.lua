@@ -4,6 +4,8 @@ env:
   - LUA="luajit"
 
 install:
+  - deb http://us.archive.ubuntu.com/ubuntu vivid main universe
+  - sudo apt-get update
   - sudo apt-get install luajit
   - sudo apt-get install luarocks
   - sudo luarocks install luafilesystem
