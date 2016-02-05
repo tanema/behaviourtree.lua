@@ -9,5 +9,5 @@ install:
   - sudo luarocks install luafilesystem
   - sudo luarocks install busted
 
-sudo: false
+sudo: true
 script: "busted spec"
