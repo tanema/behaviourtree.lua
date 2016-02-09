@@ -1,4 +1,3 @@
-require 'spec/custom_asserts'
 local BehaviourTree = require 'lib/behaviour_tree'
 local Decorator = BehaviourTree.Decorator
 
