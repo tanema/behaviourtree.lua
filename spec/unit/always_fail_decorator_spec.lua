@@ -1,4 +1,3 @@
-require 'spec/custom_asserts'
 local match = require("luassert.match")
 local BehaviourTree = require 'lib/behaviour_tree'
 local AlwaysFailDecorator = BehaviourTree.AlwaysFailDecorator
