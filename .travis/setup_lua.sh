@@ -60,16 +60,8 @@ if [ "$LUAJIT" == "yes" ]; then
 
 else
 
-  if [ "$LUA" == "lua5.1" ]; then
-    curl http://www.lua.org/ftp/lua-5.1.5.tar.gz | tar xz
-    cd lua-5.1.5;
-  elif [ "$LUA" == "lua5.2" ]; then
-    curl http://www.lua.org/ftp/lua-5.2.4.tar.gz | tar xz
-    cd lua-5.2.4;
-  elif [ "$LUA" == "lua5.3" ]; then
-    curl http://www.lua.org/ftp/lua-5.3.2.tar.gz | tar xz
-    cd lua-5.3.2;
-  fi
+  curl http://www.lua.org/ftp/${LUA}.tar.gz | tar xz
+  cd ${LUA};
 
   # Build Lua without backwards compatibility for testing
   perl -i -pe 's/-DLUA_COMPAT_(ALL|5_2)//' src/Makefile
@@ -113,10 +105,6 @@ rm -rf $LUAROCKS_BASE
 
 if [ "$LUAJIT" == "yes" ]; then
   rm -rf $LUAJIT_BASE;
-elif [ "$LUA" == "lua5.1" ]; then
-  rm -rf lua-5.1.5;
-elif [ "$LUA" == "lua5.2" ]; then
-  rm -rf lua-5.2.4;
-elif [ "$LUA" == "lua5.3" ]; then
-  rm -rf lua-5.3.2;
+else
+  rm -rf ${LUA};
 fi
