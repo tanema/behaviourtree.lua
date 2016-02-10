@@ -1,4 +1,5 @@
 require 'spec/custom_asserts'
+local match = require("luassert.match")
 local BehaviourTree = require 'lib/behaviour_tree'
 
 describe('BranchNode', function()
@@ -75,12 +76,12 @@ describe('BranchNode', function()
     it('should set the current nodes control', function()
       stub(node, 'setControl')
       subject:_run()
-      assert.stub(node.setControl).was.called_with(node, subject)
+      assert.stub(node.setControl).was.called_with(match.is_ref(node), subject)
     end)
     it('should call start on the current node if first run', function()
       stub(node, 'start')
       subject:_run('foo')
-      assert.stub(node.start).was.called_with(node, 'foo')
+      assert.stub(node.start).was.called_with(match.is_ref(node), 'foo')
     end)
     it('should not call start on the current node if running', function()
       subject.node = node
@@ -92,7 +93,7 @@ describe('BranchNode', function()
     it('should call run on the current node', function()
       stub(node, 'run')
       subject:_run('foo')
-      assert.stub(node.run).was.called_with(node, 'foo')
+      assert.stub(node.run).was.called_with(match.is_ref(node), 'foo')
     end)
   end)
 

@@ -1,4 +1,5 @@
 require 'spec/custom_asserts'
+local match = require("luassert.match")
 local BehaviourTree = require 'lib/behaviour_tree'
 local AlwaysFailDecorator = BehaviourTree.AlwaysFailDecorator
 
@@ -48,7 +49,7 @@ describe('AlwaysFailDecorator', function()
     it('should call start on the node', function()
       stub(task, 'start')
       subject:start('foobar')
-      assert.stub(task.start).was.called_with(task, 'foobar')
+      assert.stub(task.start).was.called_with(match.is_ref(task), 'foobar')
     end)
   end)
 
@@ -61,7 +62,7 @@ describe('AlwaysFailDecorator', function()
     it('should call finish on the node', function()
       stub(task, 'finish')
       subject:finish('foobar')
-      assert.stub(task.finish).was.called_with(task, 'foobar')
+      assert.stub(task.finish).was.called_with(match.is_ref(task), 'foobar')
     end)
   end)
 
@@ -79,7 +80,7 @@ describe('AlwaysFailDecorator', function()
     it('should call run on the node', function()
       stub(task, 'run')
       subject:run('foobar')
-      assert.stub(task.run).was.called_with(task, 'foobar')
+      assert.stub(task.run).was.called_with(match.is_ref(task), 'foobar')
     end)
   end)
 
