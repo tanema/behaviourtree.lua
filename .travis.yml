@@ -16,9 +16,15 @@ branches:
 
 before_install:
   - source .travis/setenv_lua.sh
-  - luarocks install luassert
-  - luarocks install luafilesystem
+  - pip install --user pyYAML
+  - pip install --user cpp-coveralls
   - luarocks install busted
+  - luarocks install luacov
+  - luarocks install luacov-coveralls --server=https://luarocks.org/dev
 
-script: "busted spec"
+script:
+  - busted -c
 
+after_success:
+  - coveralls -b . -r . -i ./lib --dump c.report.json
+  - luacov-coveralls -j c.report.json -v
