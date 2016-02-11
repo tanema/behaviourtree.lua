@@ -9,6 +9,7 @@ BehaviourTree.Registry                = Registry
 BehaviourTree.Task                    = Node
 BehaviourTree.BranchNode              = require(_PACKAGE..'/node_types/branch_node')
 BehaviourTree.Priority                = require(_PACKAGE..'/node_types/priority')
+BehaviourTree.ActivePriority          = require(_PACKAGE..'/node_types/active_priority')
 BehaviourTree.Random                  = require(_PACKAGE..'/node_types/random')
 BehaviourTree.Sequence                = require(_PACKAGE..'/node_types/sequence')
 BehaviourTree.Decorator               = require(_PACKAGE..'/node_types/decorator')
