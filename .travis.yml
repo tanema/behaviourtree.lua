@@ -1,24 +1,33 @@
 language: c
+
 sudo: false
+
 env:
   global:
     - LUAROCKS=2.3.0
   matrix:
-    - LUA=lua5.1
-    - LUA=lua5.2
-    - LUA=lua5.3
+    - LUA=lua-5.1.5
+    - LUA=lua-5.2.4
+    - LUA=lua-5.3.2
     - LUA=luajit     # latest stable version (2.0.4)
     - LUA=luajit2.0  # current head of 2.0 branch
     - LUA=luajit2.1  # current head of 2.1 branch
+
 branches:
   only:
     - master
 
 before_install:
   - source .travis/setenv_lua.sh
-  - luarocks install luassert
-  - luarocks install luafilesystem
+  - pip install --user pyYAML
+  - pip install --user cpp-coveralls
   - luarocks install busted
+  - luarocks install luacov
+  - luarocks install luacov-coveralls --server=https://luarocks.org/dev
 
-script: "busted spec"
+script:
+  - busted -c
 
+after_success:
+  - coveralls -b . -r . -i ./lib --dump c.report.json
+  - luacov-coveralls -j c.report.json -v
