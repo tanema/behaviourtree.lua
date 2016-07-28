@@ -41,7 +41,7 @@ local mytask = BehaviourTree.Task:new({
   -- fail()    - The task did fail
   -- running() - The task is still running and will be called directly from parent node
   run = function(task, obj)
-    success()
+    task:success()
   end
 });
 
@@ -54,7 +54,7 @@ function myothertask:finish(obj)
   obj.isStarted = false
 end
 function myothertask:run(obj)
-  success()
+  self:success()
 end
 --however the other syntax better lends itself to building an inline table
 ```
@@ -152,9 +152,9 @@ And now an example of how all could work together.
 ``` lua
 BehaviourTree.Task:new({
   name = 'bark',
-  run = function(self, dog)
+  run = function(task, dog)
     dog:bark()
-    success()
+    task:success()
   end
 })
 
@@ -163,20 +163,20 @@ local btree = BehaviourTree:new({
     nodes: {
       'bark',
       BehaviourTree.Task:new({
-        run = function(self, dog)
+        run = function(task, dog)
           dog:randomlyWalk()
-          success()
+          task:success()
         end
       }),
       'bark',
       BehaviourTree.Task:new({
-        run = function(self, dog) 
+        run = function(task, dog) 
           if dog:standBesideATree() then
             dog:liftALeg()
             dog:pee()
-            success()
+            task:success()
           else
-            fail()
+            task:fail()
           end
         end
       }),
