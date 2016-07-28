@@ -4,18 +4,18 @@ local count
 local looking = BT.Task:new()
 function looking:run()
   print("looking")
-  success()
+  self:success()
 end
 local runningTask = BT.Task:new()
 function runningTask:run()
   print("running")
   if count == 10 then
-    success()
+    self:success()
   else
-    running()
+    self:running()
   end
 end
- 
+
 BT.register('looking', looking)
 BT.register('running', runningTask)
 

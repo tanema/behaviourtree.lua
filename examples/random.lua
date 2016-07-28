@@ -5,35 +5,35 @@ local Frank = BT:new({
   tree = BT.Sequence:new({
     nodes = {
       BT.Task:new({
-        run = function(self, object)
+        run = function(task, object)
           print(object.name .. " looking")
-          success()
+          task:success()
         end
       }),
       BT.Random:new({
         nodes = {
           BT.Task:new({
-            run = function(self, object)
+            run = function(task, object)
               print(object.name .. " walk left")
-              success()
+              task:success()
             end
           }),
           BT.Task:new({
-            run = function(self, object)
+            run = function(task, object)
               print(object.name .. " walk up")
-              success()
+              task:success()
             end
           }),
           BT.Task:new({
-            run = function(self, object)
+            run = function(task, object)
               print(object.name .. " walk right")
-              success()
+              task:success()
             end
           }),
           BT.Task:new({
-            run = function(self, object)
+            run = function(task, object)
               print(object.name .. " walk down")
-              success()
+              task:success()
             end
           }),
         }
