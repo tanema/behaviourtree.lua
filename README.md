@@ -160,7 +160,7 @@ BehaviourTree.Task:new({
 
 local btree = BehaviourTree:new({
   tree = BehaviourTree.Sequence:new({
-    nodes: {
+    nodes = {
       'bark',
       BehaviourTree.Task:new({
         run = function(task, dog)
