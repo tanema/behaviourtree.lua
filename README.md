@@ -8,9 +8,9 @@ A Lua implementation of Behavior Trees ported from javascript [here](http://gith
 
 Just copy the lib folder into your project folder, rename it (example: 'behaviourtree') 
 
-####For Plain Lua
+#### For Plain Lua
 `BehaviourTree = require('behaviourtree/behaviour_tree')`
-####For Love 2D
+#### For Love 2D
 `BehaviourTree = require('behaviourtree') --uses init.lua file`
 
 ## How to use
