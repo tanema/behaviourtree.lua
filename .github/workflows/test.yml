@@ -13,19 +13,23 @@ jobs:
           - "5.3"
           - "luajit"
     steps:
-      - uses: actions/checkout@master
-      - uses: leafo/gh-actions-lua@v9
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Lua Installation
+        uses: leafo/gh-actions-lua@v9
         with:
           luaVersion: ${{ matrix.luaVersion }}
-      - uses: leafo/gh-actions-luarocks@v4
-      - name: install dependencies
+      - name: Luarocks Installation
+        uses: leafo/gh-actions-luarocks@v4
+      - name: Install Dependencies
         run: |
           luarocks install busted
           luarocks install luacov
           luarocks install luacov-reporter-lcov
-      - name: test
+      - name: Run busted tests
         run: |
           busted --coverage --output=utfTerminal
-      - uses: romeovs/lcov-reporter-action@v0.2.16
+      - name: Code Coverage Report
+        uses: romeovs/lcov-reporter-action@v0.2.11
         with:
           lcov-file: ./lcov.info
