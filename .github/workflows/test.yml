@@ -1,11 +1,15 @@
 name: lua-busted-tests
 run-name: ${{ github.actor }} running lua busted tests
-strategy:
-  fail-fast: false
-  matrix:
-    luaVersion: ["5.1", "5.2", "5.3", "luajit"]
-on: [push, pull_request]
+on: [push]
 jobs:
+  strategy:
+    fail-fast: false
+    matrix:
+      luaVersion:
+        - "5.1"
+        - "5.2"
+        - "5.3"
+        - "luajit"
   test:
     runs-on: ubuntu-latest
     steps:
