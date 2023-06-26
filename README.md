@@ -1,16 +1,14 @@
 # BehaviourTree.lua
 ![Build Status](https://github.com/tanema/behaviourtree.lua/workflows/lua-busted-tests/badge.svg)
 
-A Lua implementation of Behavior Trees ported from javascript [here](http://github.com/Calamari/BehaviorTree.js). They are useful for implementing AIs. If you need more information about Behavior Trees, look on [GameDevAI](http://aigamedev.com), there is a nice [video about Behavior Trees from Alex Champandard](http://aigamedev.com/open/article/behavior-trees-part1/). There is also a nice read of [Björn Knafla](http://www.altdevblogaday.com/author/bjoern-knafla/) explaining how [explaining how Behavior Trees work](http://www.altdevblogaday.com/2011/02/24/introduction-to-behavior-trees/).
+A Lua implementation of Behavior Trees ported from javascript [here](http://github.com/Calamari/BehaviorTree.js).
+They are useful for implementing behavior for video games or more complex systems.
 
 ## Installation
-
 Just copy the lib folder into your project folder, rename it (example: 'behaviourtree')
 
-#### For Plain Lua
-`BehaviourTree = require('behaviourtree/behaviour_tree')`
-#### For Love 2D
-`BehaviourTree = require('behaviourtree') --uses init.lua file`
+- Lua: `local BehaviourTree = require('behaviourtree/behaviour_tree')`
+- Love2D: `local BehaviourTree = require('behaviourtree') --uses init.lua file`
 
 ## How to use
 
@@ -214,26 +212,7 @@ local decoratedSequence = BehaviourTree.InvertDecorator:new({
 
 *Those three decorators are useful, but the most useful decorators are those you build for your project, that do stuff with your objects. Just [check out the code](https://github.com/tanema/behaviourtree.lua/blob/master/node_types/invert_decorator.lua), to see how simple it is, to create your decorator.*
 
-## Contributing
-
-If you want to contribute? If you have some ideas or critics, just open an issue, here on github. If you want to get your hands dirty, you can fork this repo. But note: If you write code, don't forget to write tests. And then make a pull request. I'll be happy to see what's coming.
-
-##Specs
-
-This project uses [busted](http://olivinelabs.com/busted/) for its specs. If you want to run the specs, you will have to install it first. Then just execute the following:
-
-```bash
-cd /folder/where/the/spec/folder/is
-busted
-```
-
-## MIT License
-
-Copyright (C) 2013 Georg Tavonius
-Copyright (C) 2014 Tim Anema
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+## Resources
+- [Behavior Trees intro on GameDevAI](http://aigamedev.com)
+- [Video about Behavior Trees from Alex Champandard](http://aigamedev.com/open/article/behavior-trees-part1/).
+- [Björn Knafla explains how Behavior Trees work](http://www.altdevblogaday.com/2011/02/24/introduction-to-behavior-trees/).
