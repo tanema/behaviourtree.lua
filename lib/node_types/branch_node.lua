@@ -19,7 +19,11 @@ end
 
 function BranchNode:_run(object)
   if not self.nodeRunning then
-    self.node = Registry.getNode(self.nodes[self.actualTask]) 
+    local node = self.nodes[self.actualTask]
+    self.node = Registry.getNode(node)
+    if type(node) == 'string' then
+      self.nodes[self.actualTask] = self.node
+    end
     self.node:start(object)
     self.node:setControl(self)
   end

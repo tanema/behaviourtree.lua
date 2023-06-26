@@ -20,6 +20,13 @@ BehaviourTree.AlwaysSucceedDecorator  = require(_PACKAGE..'/node_types/always_su
 BehaviourTree.register = Registry.register
 BehaviourTree.getNode = Registry.getNode
 
+function BehaviourTree:initialize(config)
+  Node.initialize(self, config)
+  if type(self.tree) == 'string' then
+    self.tree = Registry.getNode(self.tree)
+  end
+end
+
 function BehaviourTree:run(object)
   if self.started then
     Node.running(self) --call running if we have control
