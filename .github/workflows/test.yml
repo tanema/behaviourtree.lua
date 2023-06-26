@@ -1,6 +1,6 @@
 name: lua-busted-tests
 run-name: ${{ github.actor }} running lua busted tests
-on: [push, pull_request]
+on: [pull_request, push]
 jobs:
   test:
     runs-on: ubuntu-latest
