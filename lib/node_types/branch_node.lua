@@ -1,5 +1,5 @@
 local _PACKAGE = (...):match("^(.+)[%./][^%./]+"):gsub("[%./]?node_types", "")
-local class = require(_PACKAGE..'/middleclass')
+local class = require('middleclass')
 local Registry = require(_PACKAGE..'/registry')
 local Node  = require(_PACKAGE..'/node_types/node')
 local BranchNode = class('BranchNode', Node)
@@ -19,7 +19,7 @@ end
 
 function BranchNode:_run(object)
   if not self.nodeRunning then
-    self.node = Registry.getNode(self.nodes[self.actualTask]) 
+    self.node = Registry.getNode(self.nodes[self.actualTask])
     self.node:start(object)
     self.node:setControl(self)
   end

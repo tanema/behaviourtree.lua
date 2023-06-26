@@ -1,5 +1,5 @@
 local _PACKAGE  = (...):match("^(.+)[%./][^%./]+"):gsub("[%./]?node_types", "")
-local class     = require(_PACKAGE..'/middleclass')
+local class = require('middleclass')
 local Registry  = require(_PACKAGE..'/registry')
 local Node      = class('Node')
 

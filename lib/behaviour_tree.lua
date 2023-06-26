@@ -1,9 +1,9 @@
 local _PACKAGE      = (...):match("^(.+)[%./][^%./]+") or ""
-local class         = require(_PACKAGE..'/middleclass')
+local class         = require('middleclass')
 local Registry      = require(_PACKAGE..'/registry')
 local Node          = require(_PACKAGE..'/node_types/node')
 local BehaviourTree = class('BehaviourTree', Node)
- 
+
 BehaviourTree.Node                    = Node
 BehaviourTree.Registry                = Registry
 BehaviourTree.Task                    = Node

@@ -21,14 +21,9 @@ jobs:
           luaVersion: ${{ matrix.luaVersion }}
       - name: Luarocks Installation
         uses: leafo/gh-actions-luarocks@v4
-      - name: Install Dependencies
-        run: |
-          luarocks install busted
-          luarocks install luacov
-          luarocks install luacov-reporter-lcov
       - name: Run busted tests
         run: |
-          busted --coverage --output=utfTerminal
+          luarocks test -- --output=utfTerminal
       - name: Setup LCOV
         uses: hrishikesh-kadam/setup-lcov@v1
       - name: Code Coverage Report

@@ -1,3 +1,7 @@
 luacov.*
 c.report.json
 lcov.info
+/luarocks
+/lua
+/lua_modules
+/.luarocks

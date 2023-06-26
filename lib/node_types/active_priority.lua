@@ -1,5 +1,5 @@
 local _PACKAGE = (...):match("^(.+)[%./][^%./]+"):gsub("[%./]?node_types", "")
-local class = require(_PACKAGE..'/middleclass')
+local class = require('middleclass')
 local Registry = require(_PACKAGE..'/registry')
 local Priority  = require(_PACKAGE..'/node_types/priority')
 local ActivePriority = class('ActivePriority', Priority)
@@ -27,7 +27,7 @@ end
 
 function ActivePriority:_finishRunningNode()
   if self.runningTask and self.runningTask > self.actualTask then
-    local runningNode = Registry.getNode(self.nodes[self.runningTask]) 
+    local runningNode = Registry.getNode(self.nodes[self.runningTask])
     runningNode:finish()
   end
 end
