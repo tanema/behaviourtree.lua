@@ -21,6 +21,9 @@ jobs:
           luaVersion: ${{ matrix.luaVersion }}
       - name: Luarocks Installation
         uses: leafo/gh-actions-luarocks@v4
+      - name: Install Dependencies
+        run: |
+          luarocks make
       - name: Run busted tests
         run: |
           luarocks test -- --output=utfTerminal
