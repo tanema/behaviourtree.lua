@@ -14,11 +14,11 @@ jobs:
           - "luajit"
     steps:
       - uses: actions/checkout@master
-      - uses: leafo/gh-actions-lua@v5
+      - uses: leafo/gh-actions-lua@v9
         with:
           luaVersion: ${{ matrix.luaVersion }}
       - uses: leafo/gh-actions-luarocks@v2
-      - name: setup
+      - name: install dependencies
         run: |
           luarocks install busted
           luarocks install luacov
