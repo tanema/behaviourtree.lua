@@ -121,7 +121,7 @@ Before you let the tree do it's work you can add an object to the tree. This obj
 
 ``` lua
 mytree:setObject(someBot);
-// do this in a loop:
+-- do this in a loop:
 mytree:run();
 ```
 
