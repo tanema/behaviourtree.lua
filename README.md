@@ -1,4 +1,5 @@
-# BehaviourTree.lua 
+# BehaviourTree.lua
+![Build Status](https://github.com/tanema/behaviourtree.lua/workflows/test/badge.svg)
 [![Build history](https://secure.travis-ci.org/tanema/behaviourtree.lua.svg)](http://travis-ci.org/#!/tanema/behaviourtree.lua)
 [![Coverage Status](https://coveralls.io/repos/github/tanema/behaviourtree.lua/badge.svg?branch=master)](https://coveralls.io/github/tanema/behaviourtree.lua?branch=master)
 
@@ -6,7 +7,7 @@ A Lua implementation of Behavior Trees ported from javascript [here](http://gith
 
 ## Installation
 
-Just copy the lib folder into your project folder, rename it (example: 'behaviourtree') 
+Just copy the lib folder into your project folder, rename it (example: 'behaviourtree')
 
 #### For Plain Lua
 `BehaviourTree = require('behaviourtree/behaviour_tree')`
@@ -170,7 +171,7 @@ local btree = BehaviourTree:new({
       }),
       'bark',
       BehaviourTree.Task:new({
-        run = function(task, dog) 
+        run = function(task, dog)
           if dog:standBesideATree() then
             dog:liftALeg()
             dog:pee()
