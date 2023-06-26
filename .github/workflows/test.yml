@@ -1,0 +1,27 @@
+name: lua-busted-tests
+run-name: ${{ github.actor }} running lua busted tests
+strategy:
+  fail-fast: false
+  matrix:
+    luaVersion: ["5.1", "5.2", "5.3", "luajit"]
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: leafo/gh-actions-lua@v5
+        with:
+          luaVersion: ${{ matrix.luaVersion }}
+      - uses: leafo/gh-actions-luarocks@v2
+      - name: setup
+        run: |
+          luarocks install busted
+          luarocks install luacov
+          luarocks install luacov-reporter-lcov
+      - name: test
+        run: |
+          busted --coverage --output=utfTerminal
+      - uses: romeovs/lcov-reporter-action@v0.2.16
+        with:
+          lcov-file: ./lcov.info
