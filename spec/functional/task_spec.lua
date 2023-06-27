@@ -1,10 +1,10 @@
-local BehaviourTree = require 'lib/behaviour_tree'
+local BehaviourTree = require 'behaviour_tree'
 local Task = BehaviourTree.Task
 
-describe('Node', function() 
+describe('Node', function()
   local subject
   before_each(function()
-    subject = Task:new() 
+    subject = Task:new()
   end)
 
   it('should be able to call success', function()

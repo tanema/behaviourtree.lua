@@ -1,6 +1,5 @@
-local _PACKAGE = (...):match("^(.+)[%./][^%./]+"):gsub("[%./]?node_types", "")
 local class = require('middleclass')
-local Decorator  = require(_PACKAGE..'/node_types/decorator')
+local Decorator = require('behaviour_tree.decorators.decorator')
 local InvertDecorator = class('InvertDecorator', Decorator)
 
 function InvertDecorator:success()

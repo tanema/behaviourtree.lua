@@ -1,4 +1,4 @@
-local BehaviourTree = require 'lib/behaviour_tree'
+local BehaviourTree = require 'behaviour_tree'
 
 describe('Random', function()
   local subject, control, task1, task2, task3
@@ -9,7 +9,7 @@ describe('Random', function()
     task3 = BehaviourTree.Task:new()
     subject = BehaviourTree.Random:new({
       control = control,
-      nodes = {task1, task2, task3} 
+      nodes = {task1, task2, task3}
     })
     subject:start()
   end)

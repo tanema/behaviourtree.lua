@@ -1,7 +1,7 @@
-local BehaviourTree = require 'lib/behaviour_tree'
+local BehaviourTree = require 'behaviour_tree'
 local Node = BehaviourTree.Node
 
-describe('Node', function() 
+describe('Node', function()
   local subject
   before_each(function()
     subject = Node:new()
@@ -31,7 +31,7 @@ describe('Node', function()
   end)
 
   describe(':run', function()
-    it('has a run method', function() 
+    it('has a run method', function()
       assert.is_function(subject.run)
     end)
   end)

@@ -2,5 +2,5 @@ return {
   reporter    = "lcov",
   reportfile  = "lcov.info",
   runreport   = true,
-  include = { 'lib' },
+  include = { 'behaviour_tree' },
 }

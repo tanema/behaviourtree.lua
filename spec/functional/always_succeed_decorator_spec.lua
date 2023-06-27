@@ -1,4 +1,4 @@
-local BehaviourTree = require 'lib/behaviour_tree'
+local BehaviourTree = require 'behaviour_tree'
 local AlwaysSucceedDecorator = BehaviourTree.AlwaysSucceedDecorator
 
 describe('AlwaysSucceedDecorator', function()
@@ -8,7 +8,7 @@ describe('AlwaysSucceedDecorator', function()
     task    = BehaviourTree.Task:new()
     subject = AlwaysSucceedDecorator:new({control = control, node = task})
   end)
-  
+
   it('should call success when node calls success', function()
     stub(control, 'success')
     function task:run()

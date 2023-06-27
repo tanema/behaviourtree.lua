@@ -1,4 +1,4 @@
-local BehaviourTree = require 'lib/behaviour_tree'
+local BehaviourTree = require 'behaviour_tree'
 
 describe('BehaviourTree', function()
   local subject

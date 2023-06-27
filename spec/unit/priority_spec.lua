@@ -1,5 +1,5 @@
 local match = require("luassert.match")
-local BehaviourTree = require 'lib/behaviour_tree'
+local BehaviourTree = require 'behaviour_tree'
 
 describe('Priority selector', function()
   local subject
@@ -57,7 +57,7 @@ describe('Priority selector', function()
   describe(':_run', function()
     local node
     before_each(function()
-      node = BehaviourTree.Task:new() 
+      node = BehaviourTree.Task:new()
       subject.nodes = {node}
       subject:start()
     end)
@@ -113,7 +113,7 @@ describe('Priority selector', function()
   describe(':running', function()
     local node
     before_each(function()
-      node = BehaviourTree.Task:new() 
+      node = BehaviourTree.Task:new()
       subject.control = {running = function()end}
       subject.node = node
     end)
@@ -131,7 +131,7 @@ describe('Priority selector', function()
   describe(':success', function()
     local node
     before_each(function()
-      node = BehaviourTree.Task:new() 
+      node = BehaviourTree.Task:new()
       subject.control = {success = function()end}
       subject.nodeRunning = true
       subject.node = node
@@ -159,7 +159,7 @@ describe('Priority selector', function()
   describe(':fail', function()
     local node
     before_each(function()
-      node = BehaviourTree.Task:new() 
+      node = BehaviourTree.Task:new()
       subject.control = {fail = function()end}
       subject.actualTask = 1
       subject.nodeRunning = true

@@ -1,5 +1,5 @@
 local match = require("luassert.match")
-local BehaviourTree = require 'lib/behaviour_tree'
+local BehaviourTree = require 'behaviour_tree'
 
 describe('Random', function()
   local subject
@@ -31,7 +31,7 @@ describe('Random', function()
       assert.is_nil(subject.actualTask)
       subject:start()
       assert.is_not_nil(subject.actualTask)
-    end)     
+    end)
     it('should call a random number', function()
       local s = spy.on(math, 'random')
       subject:start()
@@ -66,7 +66,7 @@ describe('Random', function()
   describe(':_run', function()
     local node
     before_each(function()
-      node = BehaviourTree.Task:new() 
+      node = BehaviourTree.Task:new()
       subject.nodes = {node}
       subject:start()
     end)
@@ -122,7 +122,7 @@ describe('Random', function()
   describe(':running', function()
     local node
     before_each(function()
-      node = BehaviourTree.Task:new() 
+      node = BehaviourTree.Task:new()
       subject.control = {running = function()end}
       subject.node = node
     end)
@@ -140,7 +140,7 @@ describe('Random', function()
   describe(':success', function()
     local node
     before_each(function()
-      node = BehaviourTree.Task:new() 
+      node = BehaviourTree.Task:new()
       subject.control = {success = function()end}
       subject.nodeRunning = true
       subject.node = node
@@ -168,7 +168,7 @@ describe('Random', function()
   describe(':fail', function()
     local node
     before_each(function()
-      node = BehaviourTree.Task:new() 
+      node = BehaviourTree.Task:new()
       subject.control = {fail = function()end}
       subject.nodeRunning = true
       subject.node = node

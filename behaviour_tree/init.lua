@@ -1,21 +1,21 @@
-local _PACKAGE      = (...):match("^(.+)[%./][^%./]+") or ""
 local class         = require('middleclass')
-local Registry      = require(_PACKAGE..'/registry')
-local Node          = require(_PACKAGE..'/node_types/node')
+local Registry      = require('behaviour_tree.registry')
+local Node          = require('behaviour_tree.node_types.node')
 local BehaviourTree = class('BehaviourTree', Node)
 
 BehaviourTree.Node                    = Node
 BehaviourTree.Registry                = Registry
 BehaviourTree.Task                    = Node
-BehaviourTree.BranchNode              = require(_PACKAGE..'/node_types/branch_node')
-BehaviourTree.Priority                = require(_PACKAGE..'/node_types/priority')
-BehaviourTree.ActivePriority          = require(_PACKAGE..'/node_types/active_priority')
-BehaviourTree.Random                  = require(_PACKAGE..'/node_types/random')
-BehaviourTree.Sequence                = require(_PACKAGE..'/node_types/sequence')
-BehaviourTree.Decorator               = require(_PACKAGE..'/node_types/decorator')
-BehaviourTree.InvertDecorator         = require(_PACKAGE..'/node_types/invert_decorator')
-BehaviourTree.AlwaysFailDecorator     = require(_PACKAGE..'/node_types/always_fail_decorator')
-BehaviourTree.AlwaysSucceedDecorator  = require(_PACKAGE..'/node_types/always_succeed_decorator')
+BehaviourTree.BranchNode              = require('behaviour_tree.node_types.branch_node')
+BehaviourTree.Priority                = require('behaviour_tree.node_types.priority')
+BehaviourTree.ActivePriority          = require('behaviour_tree.node_types.active_priority')
+BehaviourTree.Random                  = require('behaviour_tree.node_types.random')
+BehaviourTree.Sequence                = require('behaviour_tree.node_types.sequence')
+
+BehaviourTree.Decorator               = require('behaviour_tree.decorators.decorator')
+BehaviourTree.InvertDecorator         = require('behaviour_tree.decorators.invert')
+BehaviourTree.AlwaysFailDecorator     = require('behaviour_tree.decorators.always_fail')
+BehaviourTree.AlwaysSucceedDecorator  = require('behaviour_tree.decorators.always_succeed')
 
 BehaviourTree.register = Registry.register
 BehaviourTree.getNode = Registry.getNode

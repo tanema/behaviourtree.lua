@@ -1,4 +1,4 @@
-local BehaviourTree = require 'lib/behaviour_tree'
+local BehaviourTree = require 'behaviour_tree'
 local InvertDecorator = BehaviourTree.InvertDecorator
 
 describe('InvertDecorator', function()
@@ -8,7 +8,7 @@ describe('InvertDecorator', function()
     task    = BehaviourTree.Task:new()
     subject = InvertDecorator:new({control = control, node = task})
   end)
-  
+
   it('should call fail when node calls success', function()
     stub(control, 'fail')
     function task:run()

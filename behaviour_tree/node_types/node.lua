@@ -1,7 +1,6 @@
-local _PACKAGE  = (...):match("^(.+)[%./][^%./]+"):gsub("[%./]?node_types", "")
 local class = require('middleclass')
-local Registry  = require(_PACKAGE..'/registry')
-local Node      = class('Node')
+local Registry = require('behaviour_tree.registry')
+local Node     = class('Node')
 
 function Node:initialize(config)
   config = config or {}

@@ -1,5 +1,5 @@
 local match = require("luassert.match")
-local BehaviourTree = require 'lib/behaviour_tree'
+local BehaviourTree = require 'behaviour_tree'
 local InvertDecorator = BehaviourTree.InvertDecorator
 
 describe('InvertDecorator', function()

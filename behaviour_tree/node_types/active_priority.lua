@@ -1,7 +1,6 @@
-local _PACKAGE = (...):match("^(.+)[%./][^%./]+"):gsub("[%./]?node_types", "")
 local class = require('middleclass')
-local Registry = require(_PACKAGE..'/registry')
-local Priority  = require(_PACKAGE..'/node_types/priority')
+local Registry  = require('behaviour_tree.registry')
+local Priority  = require('behaviour_tree.node_types.priority')
 local ActivePriority = class('ActivePriority', Priority)
 
 function ActivePriority:success()

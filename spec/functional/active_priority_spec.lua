@@ -1,4 +1,4 @@
-local BehaviourTree = require 'lib/behaviour_tree'
+local BehaviourTree = require 'behaviour_tree'
 
 describe('Active priority', function()
   describe('with no child running', function()
@@ -10,7 +10,7 @@ describe('Active priority', function()
       task3 = BehaviourTree.Task:new()
       subject = BehaviourTree.ActivePriority:new({
         control = control,
-        nodes = {task1, task2, task3} 
+        nodes = {task1, task2, task3}
       })
       subject:start()
     end)
@@ -98,7 +98,7 @@ describe('Active priority', function()
 
       subject = BehaviourTree.ActivePriority:new({
         control = control,
-        nodes = {task1, task2, task3} 
+        nodes = {task1, task2, task3}
       })
       subject:start()
       subject:run()

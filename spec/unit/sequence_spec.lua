@@ -1,5 +1,5 @@
 local match = require("luassert.match")
-local BehaviourTree = require 'lib/behaviour_tree'
+local BehaviourTree = require 'behaviour_tree'
 
 describe('Sequence', function()
   local subject
@@ -57,7 +57,7 @@ describe('Sequence', function()
   describe(':_run', function()
     local node
     before_each(function()
-      node = BehaviourTree.Task:new() 
+      node = BehaviourTree.Task:new()
       subject.nodes = {node}
       subject:start()
     end)
@@ -113,7 +113,7 @@ describe('Sequence', function()
   describe(':running', function()
     local node
     before_each(function()
-      node = BehaviourTree.Task:new() 
+      node = BehaviourTree.Task:new()
       subject.control = {running = function()end}
       subject.node = node
     end)
@@ -131,7 +131,7 @@ describe('Sequence', function()
   describe(':success', function()
     local node
     before_each(function()
-      node = BehaviourTree.Task:new() 
+      node = BehaviourTree.Task:new()
       subject.actualTask = 1
       subject.control = {success = function()end}
       subject.nodeRunning = true
@@ -167,7 +167,7 @@ describe('Sequence', function()
   describe(':fail', function()
     local node
     before_each(function()
-      node = BehaviourTree.Task:new() 
+      node = BehaviourTree.Task:new()
       subject.control = {fail = function()end}
       subject.nodeRunning = true
       subject.node = node
